@@ -1,34 +1,41 @@
 require "byebug"
+require "rubygems"
+require "ruby2ruby"
+require "ruby_parser"
+require "pp"
 
 class Trait
+  attr_accessor :methods_trait
+
+  def initialize(hash)
+    @methods_trait = hash
+  end
+
   def self.define(&a_block)
     byebug
-    new_trait = Trait.new
-
+    new_trait = Trait.new({})
+    byebug
     new_trait.instance_eval(&a_block)
   end
 
   def method(symbol, &block)
     byebug
-    define_singleton_method(symbol) do
-      block
-    end
+    methods_trait[symbol] = block
   end
 
   def name(symbol)
+    byebug
     objeto = self
-    the_symbol = symbol
-    Object.const_set(the_symbol, objeto)
+    Object.const_set(symbol, objeto)
   end
 end
 
 class Class
   def uses(object)
     byebug
-    object.singleton_methods.each do |method|
+    object.methods_trait.each do |key, block|
       byebug
-      a_proc = method.to_proc
-      self.define_method(method.to_s, &a_proc) unless self.instance_methods(false).include? method
+      self.define_method(key.to_s, block)
     end
   end
 end
