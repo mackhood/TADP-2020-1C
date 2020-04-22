@@ -10,6 +10,7 @@ class Trait
 
   def initialize
     self.methods_trait = {}
+    self.methods_trait_alias = {}
   end
 
   def self.define(&a_block)
@@ -80,7 +81,8 @@ class Class
     byebug
     object.methods_trait.each do |key, block|
       self.define_method(key.to_s, block)
-      self.alias_method key object.methods_trait_alias[key] if object.methods_trait_alias.include?(key)
+      byebug
+      self.alias_method(object.methods_trait_alias[key] ,key) if object.methods_trait_alias.include?(key) 
     end
   end
 end
