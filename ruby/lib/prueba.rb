@@ -6,6 +6,7 @@ require "pp"
 
 class Trait
   attr_accessor :methods_trait
+  attr_accessor :methods_trait_alias
 
   def initialize
     self.methods_trait = {}
@@ -30,7 +31,7 @@ class Trait
   end
 
   def repeatedMethodException
-    raise "Both traits has the same methodName"
+    Proc.new { raise "Both traits has the same methodName" }
   end
 
   def copy_of_trait(object)
@@ -50,7 +51,7 @@ class Trait
       unless my_copy.methods_trait.key? key
         my_copy.methods_trait[key] = block
       else
-        my_copy.methods_trait[key] = Proc.new { raise "Both traits has the same methodName" }
+        my_copy.methods_trait[key] = self.repeatedMethodException
       end
     end
     my_copy
@@ -64,9 +65,13 @@ class Trait
   end
 
   def <<(array_of_symbols)
+    object = copy_of_trait(self)
     first_symbol = array_of_symbols[0]
+    byebug
     second_symbol = array_of_symbols[1]
-    alias_method first_symbol second_symbol if array_of_symbols.size == 2 && self.methods.include?(first_symbol)
+    byebug
+    object.methods_trait_alias[first_symbol] = second_symbol if array_of_symbols.size == 2
+    object
   end
 end
 
@@ -74,14 +79,15 @@ class Class
   def uses(object)
     byebug
     object.methods_trait.each do |key, block|
-      byebug
       self.define_method(key.to_s, block)
+      self.alias_method key object.methods_trait_alias[key] if object.methods_trait_alias.include?(key)
     end
   end
 end
 
 class Symbol
   def >>(symbol)
+    byebug
     array = [self, symbol] if symbol.is_a? Symbol
     array
   end
