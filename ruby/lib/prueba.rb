@@ -35,9 +35,9 @@ class Trait
 
   def copy_of_trait(object)
     a_trait = Trait.new
-     object.methods_trait.each do |key,value|
-      a_trait.methods_trait[key]=value
-     end
+    object.methods_trait.each do |key, value|
+      a_trait.methods_trait[key] = value
+    end
     a_trait
   end
 
@@ -62,6 +62,12 @@ class Trait
     byebug
     object
   end
+
+  def <<(array_of_symbols)
+    first_symbol = array_of_symbols[0]
+    second_symbol = array_of_symbols[1]
+    alias_method first_symbol second_symbol if array_of_symbols.size == 2 && self.methods.include?(first_symbol)
+  end
 end
 
 class Class
@@ -71,5 +77,12 @@ class Class
       byebug
       self.define_method(key.to_s, block)
     end
+  end
+end
+
+class Symbol
+  def >>(symbol)
+    array = [self, symbol] if symbol.is_a? Symbol
+    array
   end
 end
