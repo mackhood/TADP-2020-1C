@@ -7,10 +7,12 @@ require "pp"
 class Trait
   attr_accessor :methods_trait
   attr_accessor :methods_trait_alias
+  attr_accessor :strategy
 
   def initialize
     self.methods_trait = {}
     self.methods_trait_alias = {}
+    self.strategy = Strategy::DefaultStrategy
   end
 
   def self.define(&a_block)
@@ -74,29 +76,37 @@ class Trait
     object
   end
 
-  def do_i_not_have_conflict_methods?
+  def do_i_have_conflict_methods?
     byebug
-    new_array = self.methods_trait.values.map { |array| array.size == 1 }
+    #new_array = self.methods_trait.values.map { |array| array.size == 1 }
     byebug
+    new_array = self.methods_trait.merge(self.methods_trait.merge) { |k, v| !is_a_conlflict_method? k }.values
     @value = new_array.inject(false) { |result, element| result && element }
+    @value = !@value
   end
 
   def is_a_conlflict_method?(method)
     byebug
     @other = self.methods_trait[method].size != 1
   end
+
+  def ^(new_strategy)
+    my_copy = copy_of_trait(self)
+    strategy = new_strategy
+    my_copy
+  end
 end
 
 class Class
   def uses(object)
-    byebug
-    value = object.do_i_not_have_conflict_methods?
     other = object.is_a_conlflict_method?(:metodo1)
-    byebug
     object.methods_trait.each do |key, array_of_block|
-      self.define_method(key.to_s, array_of_block[0])
-      byebug
-      self.alias_method(object.methods_trait_alias[key], key) if object.methods_trait_alias.include?(key)
+      unless object.is_a_conlflict_method?(key)
+        self.define_method(key.to_s, array_of_block[0])
+        self.alias_method(object.methods_trait_alias[key], key) if object.methods_trait_alias.include?(key)
+      else
+        object.strategy.execute(object, self, key)
+      end
     end
   end
 end
@@ -106,5 +116,48 @@ class Symbol
     byebug
     array = [self, symbol] if symbol.is_a? Symbol
     array
+  end
+end
+
+module Strategy
+  def self.createStrategy(name, &block)
+    self.class.const_set :name, Class.new {
+      def self.execute(a_trait, a_class, key)
+        call.block
+      end
+    }
+  end
+
+  class DefaultStrategy #Throws  exception
+    def self.execute(a_trait, a_class, key)
+      array_of_procs = a_trait.methods_trait[key]
+      a_class.define_method(key.to_s, array_of_block[0])
+    end
+  end
+
+  class In_Order
+    def self.execute(a_trait, a_class, key)
+      array_of_procs = a_trait.methods_trait[key]
+      a_class.define_method(key.to_s) do
+        array_of_procs.each do |block|
+          block.call
+        end
+      end
+    end
+  end
+
+  class Function_fold
+    def self.execute(a_trait, a_class, key, &function)
+      array_of_procs = a_trait.methods_trait[key]
+      a_class.define_method(key.to_s) do
+        array_of_procs.each do |block|
+        end
+      end
+    end
+  end
+
+  class Conditional_return
+    def self.execute(a_trait, a_class, key)
+    end
   end
 end
