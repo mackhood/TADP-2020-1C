@@ -22,7 +22,7 @@ class Trait
 
   def method(symbol, &block)
     byebug
-    methods_trait[symbol] = block
+    methods_trait[symbol] = [block]
   end
 
   def name(symbol)
@@ -44,15 +44,14 @@ class Trait
   end
 
   def +(anotherTrait)
-    byebug
     my_copy = copy_of_trait(self)
-    byebug
-    anotherTrait.methods_trait.each do |key, block|
-      byebug
+    anotherTrait.methods_trait.each do |key, array_of_block|
       unless my_copy.methods_trait.key? key
-        my_copy.methods_trait[key] = block
+        my_copy.methods_trait[key] = array_of_block
+        byebug
       else
-        my_copy.methods_trait[key] = self.repeatedMethodException
+        byebug
+        my_copy.methods_trait[key] = [my_copy.repeatedMethodException, my_copy.methods_trait[key][0], array_of_block[0]]
       end
     end
     my_copy
@@ -74,15 +73,30 @@ class Trait
     object.methods_trait_alias[first_symbol] = second_symbol if array_of_symbols.size == 2
     object
   end
+
+  def do_i_not_have_conflict_methods?
+    byebug
+    new_array = self.methods_trait.values.map { |array| array.size == 1 }
+    byebug
+    @value = new_array.inject(false) { |result, element| result && element }
+  end
+
+  def is_a_conlflict_method?(method)
+    byebug
+    @other = self.methods_trait[method].size != 1
+  end
 end
 
 class Class
   def uses(object)
     byebug
-    object.methods_trait.each do |key, block|
-      self.define_method(key.to_s, block)
+    value = object.do_i_not_have_conflict_methods?
+    other = object.is_a_conlflict_method?(:metodo1)
+    byebug
+    object.methods_trait.each do |key, array_of_block|
+      self.define_method(key.to_s, array_of_block[0])
       byebug
-      self.alias_method(object.methods_trait_alias[key] ,key) if object.methods_trait_alias.include?(key) 
+      self.alias_method(object.methods_trait_alias[key], key) if object.methods_trait_alias.include?(key)
     end
   end
 end
