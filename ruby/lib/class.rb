@@ -1,6 +1,11 @@
 class Class
-  def uses (aTrait)
-    aTraitMethods = aTrait.class.instance_methods false
-    aTraitMethods.each { |aMethod| !self.class.methods.include? aMethod ? self.class.bind(aMethod) : null}
+  def uses (unTrait)
+    unTrait.metodos.keys.each do |simbolo|
+      #chequeo que no exista un metodo con ese simbolo, para crearlo
+
+      if !self.method_defined? simbolo
+        self.send(:define_method, simbolo, unTrait.metodos[simbolo])
+      end
+    end
   end
 end

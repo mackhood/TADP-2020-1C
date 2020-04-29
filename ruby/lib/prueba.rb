@@ -1,15 +1,20 @@
 require_relative './trait.rb'
 require_relative './class.rb'
 
-Operations = Trait.new
-Operations.addMethod( 'addition',
-    def addition(a, b)
-      return a + b
+  Trait.define do
+    name :Operaciones
+    method :saluda do
+      print "Hola"
     end
-)
+    method :duplica do |un_numero|
+      un_numero * 2
+    end
+  end
 
 
-class Prueba uses Operations
+
+
+class Prueba uses Operaciones
   def materia
     :tadp
   end

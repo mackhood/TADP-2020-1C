@@ -1,14 +1,20 @@
 class Trait
-  def addMethod(symbol,method)
-    self.class.send(:define_method, symbol) do method end
+  attr_accessor :metodos
+  def initialize
+    @metodos = {}
+    super
   end
-  #Return this method in case that a name is in two added traits.
-  def repeatedMethodException
-    raise 'An error has ocurred. A method is repeated in different added traits.'
-    end
 
-  def +(otherTrait)
-    otherTraitMethods = otherTrait.instance_methods false
-    otherTraitMethods.each { |aMethod| !this.methods.include? aMethod ? this.bind(aMethod) : addMethod(repeatedMethodException, :aMethod)}
+  def method(nombre, &bloque) #este metodo debe guardar el metodo a definir en las clases que incluyan este trait
+    @metodos[nombre] = bloque
+  end
+
+  def name(simbolo) #esto le deberia asignar el simbolo al trait
+    Object.const_set(simbolo, self) # segun https://stackoverflow.com/a/4113502 esto deberia cambiar el simbolo...
+  end
+
+  def self.define (&contenido) #La singleton class funciona como factory
+    elTrait = Trait.new
+    elTrait.instance_eval(&contenido)
   end
 end
