@@ -1,8 +1,4 @@
 require "byebug"
-require "rubygems"
-require "ruby2ruby"
-require "ruby_parser"
-require "pp"
 
 class Trait
   attr_accessor :methods_trait
@@ -150,7 +146,7 @@ module Strategy
         byebug
         self.define_method(key.to_s) do |*args|
           byebug
-          @@procs.each_with_index do |block,i|
+          @@procs.each_with_index do |block, i|
             byebug
             self.instance_exec args[i], &block
             byebug
@@ -162,10 +158,19 @@ module Strategy
 
   class Function_fold
     def self.execute(a_trait, a_class, key)
-      array_of_procs = a_trait.methods_trait[key]
-      array_of_procs.remove(0)
-      a_class.define_method(key.to_s) do
-        array_of_procs.inject() { |result, elemnt| result function element }
+      a_trait.methods_trait[key].delete_at(0)
+      @@procs = a_trait.methods_trait[key]
+      a_class.class_eval do
+        self.define_method(key.to_s) do |*args|
+          @function = args.delete_at(0).to_sym
+          byebug
+          new_array = @@procs.each_with_index.map do |block, i|
+            byebug
+            self.instance_exec args[i], &block
+          end
+          byebug
+          new_array.inject() { |result, element| result.send(@function, element) }
+        end
       end
     end
   end
