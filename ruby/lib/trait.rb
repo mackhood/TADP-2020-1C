@@ -17,4 +17,16 @@ class Trait
     elTrait = Trait.new
     elTrait.instance_eval(&contenido)
   end
+
+  def +(otroTrait)
+    otroTrait.metodos.keys.each do |simbolo|
+      #chequeo que no exista un metodo con ese simbolo, para crearlo
+      if @metodos.has_key?(simbolo)
+        @metodos[simbolo] = proc{ raise "Error. Este metodo esta definido en mas de un trait." }
+      else
+        @metodos[simbolo] = otroTrait.metodos[simbolo]
+      end
+    end
+    self
+  end
 end
