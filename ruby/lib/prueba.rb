@@ -177,6 +177,19 @@ module Strategy
 
   class Conditional_return
     def self.execute(a_trait, a_class, key)
+      a_trait.methods_trait[key].delete_at(0)
+      @@procs = a_trait.methods_trait[key]
+      a_class.class_eval do
+        self.define_method(key.to_s) do |*args|
+          @function = args.delete_at(0)
+          @@procs.each_with_index do |block, i|
+            byebug
+            value = self.instance_exec args[i], &block
+            byebug
+            return value if @function.call(value)
+          end
+        end
+      end
     end
   end
 end
