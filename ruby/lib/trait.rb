@@ -29,4 +29,13 @@ class Trait
     end
     self
   end
+
+  def -(simbolo)
+    if @metodos.has_key?(simbolo)
+      @metodos = @metodos.slice(simbolo)
+      self
+    else
+      raise "Error en la resta de metodos. El simbolo " + simbolo + " no esta definido."
+    end
+  end
 end

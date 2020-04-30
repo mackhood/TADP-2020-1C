@@ -25,7 +25,7 @@ end
 
 
 class Prueba
-  uses (Operaciones + Saludo)
+  uses Operaciones + (Saludo - :saluda)
   def materia
     :tadp
   end
