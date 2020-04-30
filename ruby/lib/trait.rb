@@ -73,9 +73,6 @@ class Trait
   end
 
   def do_i_have_conflict_methods?
-    byebug
-    #new_array = self.methods_trait.values.map { |array| array.size == 1 }
-    byebug
     new_array = self.methods_trait.merge(self.methods_trait.merge) { |k, v| !is_a_conlflict_method? k }.values
     @value = new_array.inject(false) { |result, element| result && element }
     @value = !@value
@@ -162,14 +159,18 @@ module Strategy
       @@procs = a_trait.methods_trait[key]
       a_class.class_eval do
         self.define_method(key.to_s) do |*args|
-          @function = args.delete_at(0).to_sym
+          @function = args.delete_at(0)
           byebug
           new_array = @@procs.each_with_index.map do |block, i|
             byebug
             self.instance_exec args[i], &block
           end
           byebug
-          new_array.inject() { |result, element| result.send(@function, element) }
+          #new_array.inject() { |result, element| result.send(@function, element) }
+          new_array.inject() { |result, element|
+            byebug
+            result = self.instance_exec result, element, &@function
+          }
         end
       end
     end
