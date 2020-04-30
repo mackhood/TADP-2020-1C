@@ -99,12 +99,13 @@ end
 
 class Class
   def uses(object)
-    other = object.is_a_conlflict_method?(:metodo1)
     object.methods_trait.each do |key, array_of_block|
       unless object.is_a_conlflict_method?(key)
         self.define_method(key.to_s, array_of_block[0])
+        byebug
         self.alias_method(object.methods_trait_alias[key], key) if object.methods_trait_alias.include?(key)
       else
+        byebug
         object.strategy.execute(object, self, key)
       end
     end
@@ -130,28 +131,32 @@ module Strategy
 
   class DefaultStrategy #Throws  exception
     def self.execute(a_trait, a_class, key)
-      array_of_procs = a_trait.methods_trait[key]
-      a_class.define_method(key.to_s, array_of_block[0])
+      byebug
+      a_class.instance_eval do
+        byebug
+        define_method(key.to_s, a_trait.methods_trait[key][0])
+      end
     end
   end
 
   class In_Order
     def self.execute(a_trait, a_class, key)
       array_of_procs = a_trait.methods_trait[key]
+      array_of_procs.remove(0)
       a_class.define_method(key.to_s) do
-        array_of_procs.each do |block|
-          block.call
+        array_of_procs.each_with_index do |block, i|
+          block.call()
         end
       end
     end
   end
 
   class Function_fold
-    def self.execute(a_trait, a_class, key, &function)
+    def self.execute(a_trait, a_class, key)
       array_of_procs = a_trait.methods_trait[key]
+      array_of_procs.remove(0)
       a_class.define_method(key.to_s) do
-        array_of_procs.each do |block|
-        end
+        array_of_procs.inject() { |result, elemnt| result function element }
       end
     end
   end
