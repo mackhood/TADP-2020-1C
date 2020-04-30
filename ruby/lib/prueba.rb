@@ -92,7 +92,8 @@ class Trait
 
   def ^(new_strategy)
     my_copy = copy_of_trait(self)
-    strategy = new_strategy
+    my_copy.strategy = new_strategy
+    byebug
     my_copy
   end
 end
@@ -141,11 +142,19 @@ module Strategy
 
   class In_Order
     def self.execute(a_trait, a_class, key)
-      array_of_procs = a_trait.methods_trait[key]
-      array_of_procs.remove(0)
-      a_class.define_method(key.to_s) do
-        array_of_procs.each_with_index do |block, i|
-          block.call()
+      byebug
+      a_trait.methods_trait[key].delete_at(0)
+      @@procs = a_trait.methods_trait[key]
+      byebug
+      a_class.class_eval do
+        byebug
+        self.define_method(key.to_s) do |*args|
+          byebug
+          @@procs.each_with_index do |block,i|
+            byebug
+            self.instance_exec args[i], &block
+            byebug
+          end
         end
       end
     end
