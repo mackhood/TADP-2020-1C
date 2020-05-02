@@ -113,12 +113,12 @@ class Symbol
 end
 
 module Strategy
-  def self.createStrategy(name, &block)
-    self.class.const_set :name, Class.new {
-      def execute(a_trait, a_class, key)
-        call.block
+  def self.createStrategy(name, a_proc)
+    self.const_set(name.to_sym, Class.new do
+      self.define_method(:execute) do |a_trait, a_class, key|
+        a_proc.call(a_trait, a_class, key)
       end
-    }
+    end)
   end
 
   class DefaultStrategy
@@ -181,3 +181,9 @@ module Strategy
     end
   end
 end
+
+# the_proc = proc { |the_trait, the_class, the_key|
+#   the_class.instance_eval do
+#     define_method(the_key.to_s, Proc.new { raise "The New Strategy" })
+#   end
+# }
