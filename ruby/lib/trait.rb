@@ -1,32 +1,32 @@
-require "byebug"
-
 class Trait
   attr_accessor :methods_trait
   attr_accessor :methods_trait_alias
   attr_accessor :strategy
+  attr_accessor :name
 
   def initialize
     self.methods_trait = {}
     self.methods_trait_alias = {}
     self.strategy = Strategy::DefaultStrategy
+    self.name = ""
   end
 
   def self.define(&a_block)
-    byebug
     new_trait = Trait.new()
-    byebug
+
     new_trait.instance_eval(&a_block)
+    new_trait
   end
 
   def method(symbol, &block)
-    byebug
     methods_trait[symbol] = [block]
   end
 
   def name(symbol)
-    byebug
     objeto = self
     Object.const_set(symbol, objeto)
+    byebug
+    objeto.name = symbol.to_s
   end
 
   def repeatedMethodException
@@ -35,6 +35,8 @@ class Trait
 
   def copy_of_trait(object)
     a_trait = Trait.new
+    byebug
+    a_trait.name = object.name
     object.methods_trait.each do |key, value|
       a_trait.methods_trait[key] = value
     end
@@ -46,9 +48,7 @@ class Trait
     anotherTrait.methods_trait.each do |key, array_of_block|
       unless my_copy.methods_trait.key? key
         my_copy.methods_trait[key] = array_of_block
-        byebug
       else
-        byebug
         my_copy.methods_trait[key] = [my_copy.repeatedMethodException, my_copy.methods_trait[key][0], array_of_block[0]]
       end
     end
@@ -58,16 +58,16 @@ class Trait
   def -(symbol)
     object = copy_of_trait(self)
     object.methods_trait.delete(symbol)
-    byebug
+
     object
   end
 
   def <<(array_of_symbols)
     object = copy_of_trait(self)
     first_symbol = array_of_symbols[0]
-    byebug
+
     second_symbol = array_of_symbols[1]
-    byebug
+
     object.methods_trait_alias[first_symbol] = second_symbol if array_of_symbols.size == 2
     object
   end
@@ -79,14 +79,13 @@ class Trait
   end
 
   def is_a_conlflict_method?(method)
-    byebug
     @other = self.methods_trait[method].size != 1
   end
 
   def ^(new_strategy)
     my_copy = copy_of_trait(self)
     my_copy.strategy = new_strategy
-    byebug
+
     my_copy
   end
 end
@@ -96,10 +95,9 @@ class Class
     object.methods_trait.each do |key, array_of_block|
       unless object.is_a_conlflict_method?(key)
         self.define_method(key.to_s, array_of_block[0])
-        byebug
+
         self.alias_method(object.methods_trait_alias[key], key) if object.methods_trait_alias.include?(key)
       else
-        byebug
         object.strategy.execute(object, self, key)
       end
     end
@@ -108,7 +106,6 @@ end
 
 class Symbol
   def >>(symbol)
-    byebug
     array = [self, symbol] if symbol.is_a? Symbol
     array
   end
@@ -125,9 +122,7 @@ module Strategy
 
   class DefaultStrategy #Throws  exception
     def self.execute(a_trait, a_class, key)
-      byebug
       a_class.instance_eval do
-        byebug
         define_method(key.to_s, a_trait.methods_trait[key][0])
       end
     end
@@ -135,18 +130,13 @@ module Strategy
 
   class In_Order
     def self.execute(a_trait, a_class, key)
-      byebug
       a_trait.methods_trait[key].delete_at(0)
       @@procs = a_trait.methods_trait[key]
-      byebug
+
       a_class.class_eval do
-        byebug
         self.define_method(key.to_s) do |*args|
-          byebug
           @@procs.each_with_index do |block, i|
-            byebug
             self.instance_exec args[i], &block
-            byebug
           end
         end
       end
@@ -160,15 +150,13 @@ module Strategy
       a_class.class_eval do
         self.define_method(key.to_s) do |*args|
           @function = args.delete_at(0)
-          byebug
+
           new_array = @@procs.each_with_index.map do |block, i|
-            byebug
             self.instance_exec args[i], &block
           end
-          byebug
+
           #new_array.inject() { |result, element| result.send(@function, element) }
           new_array.inject() { |result, element|
-            byebug
             result = self.instance_exec result, element, &@function
           }
         end
@@ -184,9 +172,8 @@ module Strategy
         self.define_method(key.to_s) do |*args|
           @function = args.delete_at(0)
           @@procs.each_with_index do |block, i|
-            byebug
             value = self.instance_exec args[i], &block
-            byebug
+
             return value if @function.call(value)
           end
         end
