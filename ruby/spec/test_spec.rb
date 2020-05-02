@@ -41,7 +41,7 @@ describe "Trait" do
       describe " #name" do
         it "Gives name to object" do
           byebug
-          expect(miTrait.name).to eq MiTrait
+          expect(miTrait.trait_name).to eq "MiTrait"
         end
       end
     end
