@@ -27,13 +27,13 @@ class Trait
   def name(symbol)
     objeto = self
     Object.const_set(symbol, objeto)
-    byebug
+
     self.trait_name = symbol.to_s
   end
 
   def copy_of_trait(object)
     a_trait = Trait.new
-    byebug
+
     a_trait.trait_name = object.trait_name
     object.methods_trait.each do |key, value|
       a_trait.methods_trait[key] = value
@@ -70,9 +70,9 @@ class Trait
     object
   end
 
-  def do_i_have_conflict_methods? #not working
+  def do_i_have_conflict_methods? #not working_investigate
     new_array = self.methods_trait.merge(self.methods_trait.merge) { |k, v| !is_a_conlflict_method? k }.values
-    byebug
+
     @value = new_array.inject() { |result, element| result && element }
     @value = !@value
   end
@@ -89,9 +89,15 @@ class Trait
   end
 end
 
+class TraitMethodRepeatException < StandardError
+  def initialize(msg = "Both traits has the same methodName", exception_type = "custom")
+    @exception_type = exception_type
+    super(msg)
+  end
+end
+
 class Class
   def uses(object)
-    byebug
     object.do_i_have_conflict_methods?
     object.methods_trait.each do |key, array_of_block|
       unless object.is_a_conlflict_method?(key)
@@ -123,9 +129,8 @@ module Strategy
 
   class DefaultStrategy
     def execute(a_trait, a_class, key)
-      byebug
       a_class.instance_eval do
-        define_method(key.to_s, Proc.new { raise "Both traits has the same methodName" })
+        define_method(key.to_s, Proc.new { raise TraitMethodRepeatException.new })
       end
       #raise "Both traits has the same methodName"
     end
@@ -133,7 +138,6 @@ module Strategy
 
   class In_Order
     def execute(a_trait, a_class, key)
-      byebug
       a_class.class_eval do
         self.define_method(key.to_s) do |*args|
           a_trait.methods_trait[key].each_with_index do |block, i|
@@ -168,7 +172,6 @@ module Strategy
     end
 
     def execute(a_trait, a_class, key)
-      byebug
       condition = self.the_condition
       a_class.class_exec condition do
         self.define_method(key.to_s) do |*args|
