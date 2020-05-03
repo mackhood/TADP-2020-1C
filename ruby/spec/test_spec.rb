@@ -101,7 +101,7 @@ describe "Trait" do
 
       object_strategy_in_order = ConflictoIn_OrderStrategy.new
       byebug
-      expect(object_strategy_in_order.metodo1).to eq("kawuabonga")
+      expect(object_strategy_in_order.metodo1).to eq(["Hola","kawuabonga"])
     end
     it "Estrategia Function_fold" do
       class ConflictoFunction_foldStrategy
@@ -110,7 +110,6 @@ describe "Trait" do
 
       object_strategy_function_fold = ConflictoFunction_foldStrategy.new
       a_proc = proc { |object, another_object| object + another_object }
-      byebug
       expect(object_strategy_function_fold.metodo1(a_proc)).to eq("Holakawuabonga")
     end
     it "Estrategia Conditional_return" do
@@ -119,7 +118,6 @@ describe "Trait" do
       end
 
       object_strategy_conditional_return = ConflictoConditional_returnStrategy.new
-      byebug
       expect(object_strategy_conditional_return.metodo1).to eq("kawuabonga")
     end
 
@@ -137,7 +135,6 @@ describe "Trait" do
       end
 
       object_strategy_user_strategy = ConflictoUserStrategy.new
-      byebug
       self.expect { object_strategy_user_strategy.metodo1 }.to raise_error(TraitMethodRepeatException)
     end
   end

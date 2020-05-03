@@ -140,9 +140,13 @@ module Strategy
     def execute(a_trait, a_class, key)
       a_class.class_eval do
         self.define_method(key.to_s) do |*args|
+          array = []
           a_trait.methods_trait[key].each_with_index do |block, i|
             puts(self.instance_exec args[i], &block)
+            array.push(self.instance_exec args[i], &block)
+            byebug
           end
+          return array
         end
       end
     end
