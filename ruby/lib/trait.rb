@@ -139,14 +139,15 @@ module Strategy
   class In_Order
     def execute(a_trait, a_class, key)
       a_class.class_eval do
+        last_result = ""
         self.define_method(key.to_s) do |*args|
-          array = []
           a_trait.methods_trait[key].each_with_index do |block, i|
             puts(self.instance_exec args[i], &block)
-            array.push(self.instance_exec args[i], &block)
+            last_result = self.instance_exec args[i], &block
             byebug
           end
-          return array
+          byebug
+          return last_result
         end
       end
     end

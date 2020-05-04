@@ -101,7 +101,7 @@ describe "Trait" do
 
       object_strategy_in_order = ConflictoIn_OrderStrategy.new
       byebug
-      expect(object_strategy_in_order.metodo1).to eq(["Hola","kawuabonga"])
+      expect(object_strategy_in_order.metodo1).to eq("kawuabonga")
     end
     it "Estrategia Function_fold" do
       class ConflictoFunction_foldStrategy
