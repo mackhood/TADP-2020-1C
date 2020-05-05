@@ -41,6 +41,19 @@ class Trait
     end
   end
 
+  def <<(reemplazo)
+    nuevoTrait = clonar
+    if(!nuevoTrait.metodos.has_key? reemplazo[0])
+      raise "No se encontro el metodo " + reemplazo[0].to_s
+    else
+      elMetodo = nuevoTrait.metodos[reemplazo[0]]
+      nuevoTrait.metodos[reemplazo[1]] = nuevoTrait.metodos[reemplazo[0]]
+      nuevoTrait.metodos.delete reemplazo[0]
+      nuevoTrait
+    end
+
+  end
+
   private
 
   def clonar
