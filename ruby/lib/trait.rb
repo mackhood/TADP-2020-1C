@@ -19,23 +19,33 @@ class Trait
   end
 
   def +(otroTrait)
+    nuevoTrait = clonar
     otroTrait.metodos.keys.each do |simbolo|
       #chequeo que no exista un metodo con ese simbolo, para crearlo
       if @metodos.has_key?(simbolo)
-        @metodos[simbolo] = proc{ raise "Error. Este metodo esta definido en mas de un trait." }
+        nuevoTrait.metodos[simbolo] = proc{ raise "Error. Este metodo esta definido en mas de un trait." } #Guardar lista de bloques para estrategias
       else
-        @metodos[simbolo] = otroTrait.metodos[simbolo]
+        nuevoTrait.metodos[simbolo] = otroTrait.metodos[simbolo]
       end
     end
-    self
+    nuevoTrait
   end
 
   def -(simbolo)
+    nuevoTrait = clonar
     if @metodos.has_key?(simbolo)
-      @metodos = @metodos.slice(simbolo)
-      self
+      nuevoTrait.metodos.delete(simbolo)
+      nuevoTrait
     else
       raise "Error en la resta de metodos. El simbolo " + simbolo + " no esta definido."
     end
+  end
+
+  private
+
+  def clonar
+    nuevoTrait = Trait.new
+    nuevoTrait.metodos = @metodos.clone
+    nuevoTrait
   end
 end

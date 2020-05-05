@@ -4,7 +4,7 @@ require_relative './class.rb'
   Trait.define do
     name :Operaciones
     method :saluda do
-      "Hola"
+      "Hola en oper"
     end
     method :duplica do |un_numero|
       un_numero * 2
