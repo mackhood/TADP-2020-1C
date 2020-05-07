@@ -70,12 +70,12 @@ class Trait
     object
   end
 
-  def do_i_have_conflict_methods? #not working_investigate
-    new_array = self.methods_trait.merge(self.methods_trait.merge) { |k, v| !is_a_conlflict_method? k }.values
+  # def do_i_have_conflict_methods? #not working_investigate
+  #   new_array = self.methods_trait.merge(self.methods_trait.merge) { |k, v| !is_a_conlflict_method? k }.values
 
-    @value = new_array.inject() { |result, element| result && element }
-    @value = !@value
-  end
+  #   @value = new_array.inject() { |result, element| result && element }
+  #   @value = !@value
+  # end
 
   def is_a_conlflict_method?(method)
     @other = self.methods_trait[method].size != 1
@@ -98,7 +98,7 @@ end
 
 class Class
   def uses(object)
-    object.do_i_have_conflict_methods?
+    #object.do_i_have_conflict_methods?
     object.methods_trait.each do |key, array_of_block|
       unless object.is_a_conlflict_method?(key)
         self.define_method(key.to_s, array_of_block[0])
@@ -195,3 +195,5 @@ end
 #     define_method(the_key.to_s, Proc.new { raise "The New Strategy" })
 #   end
 # }
+
+

@@ -114,6 +114,7 @@ describe "Trait" do
     end
     it "Estrategia Conditional_return" do
       class ConflictoConditional_returnStrategy
+        byebug
         uses (MiTrait + MiOtroTrait) ^ (Strategy::Conditional_return.new(proc { |a| a.length > 5 }))
       end
 
