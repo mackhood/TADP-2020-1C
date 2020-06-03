@@ -31,18 +31,18 @@ class Trait
     self.trait_name = symbol.to_s
   end
 
-  def copy_of_trait(object)
+  def copy_of_trait()
     a_trait = Trait.new
 
-    a_trait.trait_name = object.trait_name
-    object.methods_trait.each do |key, value|
+    a_trait.trait_name = self.trait_name
+    self.methods_trait.each do |key, value|
       a_trait.methods_trait[key] = value
     end
     a_trait
   end
 
   def +(anotherTrait)
-    my_copy = copy_of_trait(self)
+    my_copy = self.copy_of_trait
     anotherTrait.methods_trait.each do |key, array_of_block|
       unless my_copy.methods_trait.key? key
         my_copy.methods_trait[key] = array_of_block
@@ -54,14 +54,14 @@ class Trait
   end
 
   def -(symbol)
-    object = copy_of_trait(self)
+    object = self.copy_of_trait
     object.methods_trait.delete(symbol)
 
     object
   end
 
   def <<(array_of_symbols)
-    object = copy_of_trait(self)
+    object = self.copy_of_trait
     first_symbol = array_of_symbols[0]
 
     second_symbol = array_of_symbols[1]
@@ -82,7 +82,7 @@ class Trait
   end
 
   def ^(new_strategy)
-    my_copy = copy_of_trait(self)
+    my_copy = self.copy_of_trait
     my_copy.strategy = new_strategy
 
     my_copy
@@ -142,11 +142,10 @@ module Strategy
         last_result = ""
         self.define_method(key.to_s) do |*args|
           a_trait.methods_trait[key].each_with_index do |block, i|
-            puts(self.instance_exec args[i], &block)
+            self.instance_exec args[i], &block
             last_result = self.instance_exec args[i], &block
-            byebug
           end
-          byebug
+
           return last_result
         end
       end
