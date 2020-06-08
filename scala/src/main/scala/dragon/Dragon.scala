@@ -5,6 +5,7 @@ class Dragon(
    var peso : Int,
    var velocidadBase : Int = 60,
    var danio : Int = 0
+            // TODO: Implement requisitos para ser montado
 ) {
   // CONSTRUCTOR
   require(peso > 0)
