@@ -1,6 +1,8 @@
-import dragon.{Dragon, FuriaNocturna, NadoerMortifero, Gronckle, PesoNoPuedeSerMayoraVelocidadBaseException}
+import dragon.{Dragon, FuriaNocturna, Gronckle, NadoerMortifero}
+import jinete.Jinete
 import org.scalatest.{FreeSpec, Matchers}
-
+import vikingo.Vikingo
+import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
 class ProjectSpec extends FreeSpec with Matchers {
 
   "Este proyecto" - {
@@ -12,7 +14,7 @@ class ProjectSpec extends FreeSpec with Matchers {
     }
   }
 
-  "Vikingo" - {
+  "vikingo.Vikingo" - {
     "Al crear uno nuevo" - {
       "si todos los parametros son positivos o hambre en 0 se crea sin problema" in {
         var hipo = new Vikingo(50, 200, 5, 70)
@@ -99,6 +101,25 @@ class ProjectSpec extends FreeSpec with Matchers {
       "su daño 5 veces su peso" in {
         var unGronckle = new Gronckle(40)
         assert(unGronckle.getDanio == 200)
+      }
+    }
+  }
+
+  "Jinetes" - {
+    "Un vikingo monta un dragon" - {
+      "Un dragon puede llevar un vikingo que pesa menos del 20% de su peso" in {
+        var hipo = new Vikingo(50, 200, 5, 70)
+        var unGronckle = new Gronckle(251, 300)
+
+        val jineteExitoso: Jinete = hipo.montar(unGronckle)
+      }
+
+      "Un dragon NO puede llevar un vikingo que pesa mas del 20% de su peso" in {
+        var hipo = new Vikingo(50, 200, 5, 70)
+        var unGronckle = new Gronckle(249, 300)
+        assertThrows[exceptions.NoPuedeSerMontadoException]{
+          val jineteNoExitoso: Jinete = hipo.montar(unGronckle)
+        }
       }
     }
   }
