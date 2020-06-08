@@ -1,0 +1,21 @@
+uses (MiTrait + MiOtroTrait)^Strategy::In_Order.new
+uses (MiTrait + MiOtroTrait)^Strategy::Nueva.new
+uses (MiTrait + MiOtroTrait)^(Strategy::Conditional_return.new(proc{|a| a.length >5}))
+
+
+uses (MiTrait + MiOtroTrait)^a_strategy
+
+
+
+
+Strategy.createStrategy("Nueva",the_proc)
+
+
+
+the_proc = proc { |the_trait, the_class, the_key|
+  the_class.instance_eval do
+    define_method(the_key.to_s, Proc.new { raise "The New Strategy" })
+  end
+}
+
+

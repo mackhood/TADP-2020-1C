@@ -1,3 +1,3 @@
-require 'rspec'
-
-require_relative '../lib/prueba'
+require "rspec"
+require "byebug"
+require_relative "../lib/trait"
