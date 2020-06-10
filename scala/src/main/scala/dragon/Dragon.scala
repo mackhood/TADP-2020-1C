@@ -1,5 +1,5 @@
 package dragon
-import vikingo.Vikingo
+import Participante.vikingo.Vikingo
 import exceptions.PesoNoPuedeSerMayoraVelocidadBaseException
 class Dragon(
    var peso : Int,

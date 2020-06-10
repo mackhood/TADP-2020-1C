@@ -1,7 +1,7 @@
 import dragon.{Dragon, FuriaNocturna, Gronckle, NadoerMortifero}
-import jinete.Jinete
+import Participante.jinete.Jinete
 import org.scalatest.{FreeSpec, Matchers}
-import vikingo.Vikingo
+import Participante.vikingo.Vikingo
 import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
 class ProjectSpec extends FreeSpec with Matchers {
 
