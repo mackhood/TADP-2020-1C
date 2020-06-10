@@ -1,0 +1,5 @@
+package Participante
+
+class Participante {
+
+}

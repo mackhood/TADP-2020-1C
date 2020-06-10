@@ -1,16 +1,17 @@
-package vikingo
+package Participante.vikingo
 
+import Participante.Participante
+import _root_.Participante.jinete.Jinete
 import dragon.Dragon
-import jinete.Jinete
 import exceptions.NoPuedeSerMontadoException
 
-case class Vikingo(
+case class Vikingo  (
                     var peso: Int,
                     var velocidad: Int,
                     var barbarosidad: Int,
                     var hambre: Int
                     //var item : ItemAgregado TODO: Implement ItemAgregado class & Arma as subclass
-                  ) {
+                  )extends Participante {
 
   // CONSTRUCTOR
   require(peso > 0)
