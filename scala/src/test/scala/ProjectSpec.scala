@@ -1,8 +1,9 @@
-import dragon.{Dragon, FuriaNocturna, Gronckle, NadoerMortifero}
+import dragon.{Dragon, FuriaNocturna, Gronckle, NadderMortifero}
 import Participante.jinete.Jinete
 import org.scalatest.{FreeSpec, Matchers}
 import Participante.vikingo.Vikingo
 import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
+import items.SistemaDeVuelo
 class ProjectSpec extends FreeSpec with Matchers {
 
   "Este proyecto" - {
@@ -82,13 +83,13 @@ class ProjectSpec extends FreeSpec with Matchers {
 
     "Al crear un Nadoer Mortifero" - {
       "su velocidad es la velocidad habitual" in {
-        var unNadoerMortifero = new NadoerMortifero(10)
-        assert(unNadoerMortifero.getVelocidad == (60 - 10))
+        var unNadderMortifero = new NadderMortifero(10)
+        assert(unNadderMortifero.getVelocidad == (60 - 10))
       }
 
       "su daño es 150, siempre" in {
-        var unNadoerMortifero = new NadoerMortifero(30)
-        assert(unNadoerMortifero.getDanio == 150)
+        var unNadderMortifero = new NadderMortifero(30)
+        assert(unNadderMortifero.getDanio == 150)
       }
     }
 
@@ -119,6 +120,50 @@ class ProjectSpec extends FreeSpec with Matchers {
         var unGronckle = new Gronckle(249, 300)
         assertThrows[exceptions.NoPuedeSerMontadoException]{
           val jineteNoExitoso: Jinete = hipo.montar(unGronckle)
+        }
+      }
+
+      "Chimuelo es un Furia nocturna que requiere que el vikingo tenga un sistema de vuelo como ítem" in {
+        var requisito = (dragon: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
+        var chimuelo = new FuriaNocturna(255, 500, 15, Array(requisito) )
+        var hipo = new Vikingo(50, 200, 5, 70,Some(new SistemaDeVuelo))
+        hipo.montar(chimuelo)
+      }
+
+      "Chimuelo es un Furia nocturna que requiere que el vikingo tenga un sistema de vuelo como ítem (Si no lo tiene, falla) " in {
+        var requisito = (dragon: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
+        var chimuelo = new FuriaNocturna(255, 500, 15, Array(requisito) )
+        var hipo = new Vikingo(50, 200, 5, 70)
+        assertThrows[exceptions.NoPuedeSerMontadoException]{
+          hipo.montar(chimuelo)
+        }
+      }
+
+      "Los Nadder mortíferos siempre tienen una segunda restricción básica y es que el daño que puede hacer un vikingo no supere el suyo" in {
+        var unNadderMortifero = new NadderMortifero(260, 300)
+        var hipo = new Vikingo(50, 200, 5, 70)
+        hipo.montar(unNadderMortifero)
+      }
+
+      "Los Nadder mortíferos siempre tienen una segunda restricción básica y es que el daño que puede hacer un vikingo no supere el suyo (si lo supera rompe)" in {
+        var unNadderMortifero = new NadderMortifero(260, 300)
+        var hipo = new Vikingo(50, 200, 155, 70)
+        assertThrows[exceptions.NoPuedeSerMontadoException] {
+          hipo.montar(unNadderMortifero)
+        }
+      }
+
+      "Los Gronckle necesitan un vikingo que no supere un peso determinado para montarlos." in {
+        var unGronckle = new Gronckle(260, 300, Array(), 60)
+        var hipo = new Vikingo(50, 200, 5, 70)
+        hipo.montar(unGronckle)
+      }
+
+      "Los Gronckle necesitan un vikingo que no supere un peso determinado para montarlos. (si lo supera rompe)" in {
+        var unGronckle = new Gronckle(260, 300, Array(), 20)
+        var hipo = new Vikingo(50, 200, 155, 70)
+        assertThrows[exceptions.NoPuedeSerMontadoException] {
+          hipo.montar(unGronckle)
         }
       }
     }

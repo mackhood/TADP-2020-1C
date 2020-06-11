@@ -12,7 +12,7 @@ case class Vikingo  (
                       var velocidad: Int,
                       var barbarosidad: Double,
                       var hambre: Int,
-                      item: Option[Item] = None //TODO: Implement ItemAgregado class & Arma as subclass
+                      item: Option[Item] = None
                   )extends Participante {
 
   // CONSTRUCTOR
@@ -35,4 +35,16 @@ case class Vikingo  (
 
   def esMejorQue(vikingo: Vikingo,posta: Posta):Boolean = posta.resultadoVikingo(this) >= posta.resultadoVikingo(vikingo)
 
+  def poseeUnItemDelTipo[T] (): Boolean = {
+    if (this.item.isDefined) {
+      this.item.get match {
+        case _: T => true
+        case _ => false
+      }
+    }else{
+      false
+    }
+  }
+
+  def danio() : Double = barbarosidad + (if(this.item.isDefined) this.item.get.danio else 0)
 }
