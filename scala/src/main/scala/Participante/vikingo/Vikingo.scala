@@ -18,6 +18,7 @@ case class Vikingo  (
   require(velocidad > 0)
   require(barbarosidad > 0)
   require(hambre >= 0)
+  require(hambre <= 100)
 
   //METHODS
   def aumentarHambre(porcentaje: Int): Vikingo = {
