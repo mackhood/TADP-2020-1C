@@ -4,6 +4,7 @@ import Participante.Participante
 import _root_.Participante.jinete.Jinete
 import dragon.Dragon
 import exceptions.NoPuedeSerMontadoException
+import posta.Posta
 
 case class Vikingo  (
                     var peso: Int,
@@ -30,4 +31,7 @@ case class Vikingo  (
   def montar(unDragon: Dragon): Jinete ={
     if (unDragon.puedeSerMontadoPor(this)) new Jinete(unDragon, this) else throw new NoPuedeSerMontadoException
   }
+
+  def esMejorQue(vikingo: Vikingo,posta: Posta):Boolean = posta.resultadoVikingo(this) >= posta.resultadoVikingo(vikingo)
+
 }

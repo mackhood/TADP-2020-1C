@@ -1,5 +1,5 @@
 package posta
 
-case class Combate extends Posta{
+case class Combate() /*extends Posta */{
 
 }

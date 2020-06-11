@@ -9,7 +9,7 @@ trait Posta {
   def competir(): ArrayBuffer[Participante]
   def filtrarParticipante(): ArrayBuffer[Participante]
   def nivelHambreFinalizarPosta(vikingo: Vikingo): Int
-
+  def resultadoVikingo(vikingo: Vikingo):Int = ???
   def tieneHambre(vikingo: Vikingo): Boolean ={
     nivelHambreFinalizarPosta(vikingo) >100
   }
