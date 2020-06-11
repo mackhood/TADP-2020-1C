@@ -4,14 +4,15 @@ import Participante.Participante
 import _root_.Participante.jinete.Jinete
 import dragon.Dragon
 import exceptions.NoPuedeSerMontadoException
+import items.Item
 import posta.Posta
 
 case class Vikingo  (
-                    var peso: Int,
-                    var velocidad: Int,
-                    var barbarosidad: Int,
-                    var hambre: Int
-                    //var item : ItemAgregado TODO: Implement ItemAgregado class & Arma as subclass
+                      var peso: Int,
+                      var velocidad: Int,
+                      var barbarosidad: Double,
+                      var hambre: Int,
+                      item: Option[Item] = None //TODO: Implement ItemAgregado class & Arma as subclass
                   )extends Participante {
 
   // CONSTRUCTOR

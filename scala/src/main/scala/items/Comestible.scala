@@ -1,5 +1,3 @@
 package items
 
-case class Comestible(
-     var hambre : Int
-) extends Item()
+case class Comestible(var valor : Double) extends Item()

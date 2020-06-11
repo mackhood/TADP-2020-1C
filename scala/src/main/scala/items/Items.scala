@@ -1,5 +1,5 @@
 package items
 
-class Item {
-  
+abstract class Item () {
+
 }
