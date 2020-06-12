@@ -7,7 +7,7 @@ import items.{Arma, Comestible}
 
 import scala.collection.mutable.ArrayBuffer
 
-case class Combate() /*extends Posta */{
+case class Combate() extends Posta {
 
   def competir(participantes:ArrayBuffer[Participante]): ArrayBuffer[Participante] = ???
 
@@ -19,7 +19,7 @@ case class Combate() /*extends Posta */{
       case item: Arma => item.valor
       case item: Any =>  0
     })
-    case jinete: Jinete => jinete.dragon.peso * 0.2 - jinete.vikingo.peso
+    case jinete: Jinete => jinete.dragon.danio + jinete.vikingo.danio()
   }
 
 

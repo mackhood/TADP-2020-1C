@@ -8,15 +8,15 @@ import items.Item
 import posta.Posta
 
 case class Vikingo  (
-                      var peso: Int,
+                      var _peso: Int,
                       var velocidad: Int,
                       var barbarosidad: Double,
                       var hambre: Int,
                       item: Option[Item] = None
-                  )extends Participante {
+                  )extends Participante() {
 
   // CONSTRUCTOR
-  require(peso > 0)
+  require(_peso > 0)
   require(velocidad > 0)
   require(barbarosidad > 0)
   require(hambre >= 0)
@@ -33,7 +33,8 @@ case class Vikingo  (
     if (unDragon.puedeSerMontadoPor(this)) new Jinete(unDragon, this) else throw new NoPuedeSerMontadoException
   }
 
-  def esMejorQue(vikingo: Vikingo,posta: Posta):Boolean = posta.resultadoVikingo(this) >= posta.resultadoVikingo(vikingo)
+
+  def esMejorQue(vikingo: Vikingo)(posta: Posta):Boolean = posta.resultadoVikingo(this) >= posta.resultadoVikingo(vikingo)
 
   def poseeUnItemDelTipo[T] (): Boolean = {
     if (this.item.isDefined) {

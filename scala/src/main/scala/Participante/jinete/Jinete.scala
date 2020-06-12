@@ -7,4 +7,9 @@ import dragon.Dragon
 case class Jinete(
    var dragon: Dragon,
    var vikingo: Vikingo
- ) extends Participante
+ ) extends Participante(){
+
+
+
+
+}

@@ -4,6 +4,7 @@ import org.scalatest.{FreeSpec, Matchers}
 import Participante.vikingo.Vikingo
 import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
 import items.SistemaDeVuelo
+import posta.{Carrera, Combate, Pesca}
 class ProjectSpec extends FreeSpec with Matchers {
 
   "Este proyecto" - {
@@ -39,6 +40,19 @@ class ProjectSpec extends FreeSpec with Matchers {
         nuevoHipo.hambre shouldBe 100
       }
     }
+      "vikingo es mejor en postas que otro" in{
+        var hipo = new Vikingo(50, 200, 5, 70)
+        var astrid = new Vikingo(_peso = 70,400, 10, 70)
+        val pesca = Pesca()
+        val carrera = Carrera()
+        val combate = Combate()
+        astrid.esMejorQue(hipo)(pesca) shouldBe true
+        astrid.esMejorQue(hipo)(carrera) shouldBe true
+        astrid.esMejorQue(hipo)(combate) shouldBe true
+
+      }
+
+
   }
 
   "Dragon" - {

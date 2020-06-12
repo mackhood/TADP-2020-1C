@@ -1,5 +1,6 @@
 package Participante
 
-class Participante {
+abstract class Participante() {
+
 
 }
