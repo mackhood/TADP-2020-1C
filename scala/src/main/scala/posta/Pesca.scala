@@ -25,7 +25,6 @@ case class Pesca(var _requisitosParaParticipar : Array[(Participante) => Boolean
     val requisito = (x: Participante) => x match {
       case Jinete(dragon, vikingo) => ((dragon.peso * .2) - vikingo._peso) >= valor
       case Vikingo(_peso, velocidad, barbarosidad, hambre, item) => (_peso *.5 + barbarosidad * 2) >= valor
-      case _ =>
     }
     _requisitosParaParticipar :+ requisito
 
