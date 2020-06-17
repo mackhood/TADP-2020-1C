@@ -34,7 +34,7 @@ case class Vikingo  (
   }
 
 
-  def esMejorQue(vikingo: Vikingo)(posta: Posta):Boolean = posta.resultadoVikingo(this) >= posta.resultadoVikingo(vikingo)
+  def esMejorQue(vikingo: Vikingo)(posta: Posta):Boolean = posta.resultadoParticipante(this) >= posta.resultadoParticipante(vikingo)
 
   def poseeUnItemDelTipo[T] (): Boolean = {
     if (this.item.isDefined) {
@@ -48,4 +48,11 @@ case class Vikingo  (
   }
 
   def danio() : Double = barbarosidad + (if(this.item.isDefined) this.item.get.danio else 0)
+
+  def mejorMontura(dragones : Array[Dragon], postaAParticipar : Posta) : Participante = {
+    // Veo las combinaciones Jinete (las que se montan ok)
+    var jinetes : Array[Participante] = dragones.filter((dragon : Dragon) => dragon.puedeSerMontadoPor(this)).map((dragon : Dragon) => this.montar(dragon))
+    var participantesPosibles : Array[Participante] = jinetes.+:(this)
+    postaAParticipar.mejorResultado(participantesPosibles)
+  }
 }

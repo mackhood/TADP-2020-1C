@@ -183,4 +183,12 @@ class ProjectSpec extends FreeSpec with Matchers {
     }
   }
 
+  "Vikingo: Mejor resultado" - {
+    "Un vikingo sin dragones para ser jinete es el mejor resultado en una posta cualquiera" - {
+      var hipo = new Vikingo(50, 200, 5, 70)
+      var pesca = new Pesca()
+      hipo.mejorMontura(Array(), pesca).equals(hipo)
+    }
+  }
+
 }

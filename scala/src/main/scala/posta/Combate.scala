@@ -14,7 +14,7 @@ case class Combate() extends Posta {
   def filtrarParticipante(participantes:ArrayBuffer[Participante]): ArrayBuffer[Participante] = ???
   def nivelHambreFinalizarPosta(vikingo: Vikingo):Int = ???
 
-  def resultadoVikingo(participante: Participante):Double = participante match {
+  def resultadoParticipante(participante: Participante):Double = participante match {
     case vikingo: Vikingo => vikingo.barbarosidad.+(vikingo.item match {
       case item: Arma => item.valor
       case item: Any =>  0

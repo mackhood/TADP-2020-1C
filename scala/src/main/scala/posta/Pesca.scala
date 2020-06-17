@@ -13,7 +13,7 @@ case class Pesca(var _requisitosParaParticipar : Array[(Participante) => Boolean
  // def filtrarParticipante(participantes:ArrayBuffer[Participante]): ArrayBuffer[Participante] = ???
  // def nivelHambreFinalizarPosta(vikingo: Vikingo):Int = ???
 
-  def resultadoVikingo(participante: Participante):Double = participante match {
+  def resultadoParticipante(participante: Participante):Double = participante match {
     case vikingo: Vikingo => vikingo._peso * 0.5 + vikingo.barbarosidad *2
     case jinete: Jinete => jinete.dragon.peso * 0.2 - jinete.vikingo._peso
   }

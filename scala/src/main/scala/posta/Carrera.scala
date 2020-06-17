@@ -6,7 +6,7 @@ import _root_.Participante.jinete.Jinete
 
 case class Carrera() extends Posta  {
 
-  def resultadoVikingo(participante: Participante):Double = participante match {
+  def resultadoParticipante(participante: Participante):Double = participante match {
     case vikingo: Vikingo => vikingo.velocidad
     case jinete: Jinete => jinete.dragon.getVelocidad - jinete.vikingo._peso
   }
