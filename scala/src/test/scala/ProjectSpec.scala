@@ -2,9 +2,11 @@ import dragon.{Dragon, FuriaNocturna, Gronckle, NadderMortifero}
 import Participante.jinete.Jinete
 import org.scalatest.{FreeSpec, Matchers}
 import Participante.vikingo.Vikingo
+import Participante.Participante
 import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
 import items.SistemaDeVuelo
 import posta.{Carrera, Combate, Pesca}
+import torneo.Torneo
 class ProjectSpec extends FreeSpec with Matchers {
 
   "Este proyecto" - {
@@ -51,8 +53,6 @@ class ProjectSpec extends FreeSpec with Matchers {
         astrid.esMejorQue(hipo)(combate) shouldBe true
 
       }
-
-
   }
 
   "Dragon" - {
@@ -186,18 +186,25 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Postas" - {
     "Solo vikingos" - {
       "En pesca es mejor el competidor que más pescado logre cargar" - {
-        "A misma barbarosidad, el que mas pesa gana" -  {
+        "A misma barbarosidad, el que mas pesa gana" in  {
           var pesca = new Pesca()
           var unVikingo = new Vikingo(50, 200, 5, 70)
           var otroVikingo = new Vikingo(80, 200, 5, 70)
           assert(otroVikingo.esMejorQue(unVikingo)(pesca))
         }
 
-        "A mismo peso, el mas barbaro gana" -  {
+        "A mismo peso, el mas barbaro gana" in  {
           var pesca = new Pesca()
           var unVikingo = new Vikingo(50, 200, 5, 70)
           var otroVikingo = new Vikingo(50, 200, 6, 70)
           assert(otroVikingo.esMejorQue(unVikingo)(pesca))
+        }
+
+        "El primero es primero y el segundo, segundo" in {
+          var pesca = new Pesca()
+          var unVikingo = new Vikingo(50, 200, 5, 70)
+          var otroVikingo = new Vikingo(50, 200, 6, 70)
+          pesca.podioPosta(Array(unVikingo, otroVikingo)).head shouldBe otroVikingo
         }
       }
     }
@@ -215,6 +222,26 @@ class ProjectSpec extends FreeSpec with Matchers {
       var pesca = new Pesca()
       hipo.mejorMontura(Array(), pesca).equals(hipo)
     }
+  }
+
+  "Un torneo" in {
+    var hipo = new Vikingo(50, 200, 5, 70)
+    var astrid = new Vikingo(_peso = 70,400, 10, 70)
+    val pesca = new Pesca()
+    pesca.agregarRequisitoPeso(55)
+    var elTorneo = new Torneo(Array(hipo, astrid), Array(pesca))
+    elTorneo.resultadoTorneo shouldBe Array(astrid)
+  }
+
+  "Un torneo que nadie gana (porque no pasan los requisitos)" in {
+    var hipo = new Vikingo(50, 200, 5, 70)
+    var astrid = new Vikingo(_peso = 70,400, 10, 70)
+    val pesca = new Pesca(Array {
+      case participante: Vikingo => participante._peso > 150000
+      case _ => false
+    })
+    var elTorneo = new Torneo(Array(hipo, astrid), Array(pesca))
+    elTorneo.resultadoTorneo shouldBe Array()
   }
 
 }

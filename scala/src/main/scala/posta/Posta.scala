@@ -23,6 +23,8 @@ abstract class Posta ( var requisitosParaParticipar: Array[( Participante) => Bo
     })
   }
 
+  def podioPosta (participantes : Array[Participante]) : Array[Participante] =  admisionVariosParticipantesSegunRequisitos(participantes).sortBy((unParticipante : Participante) => -this.resultadoParticipante(unParticipante))
+
   def admisionVariosParticipantesSegunRequisitos (participantes : Array[Participante]) : Array[Participante] = participantes.filter((unParticipante : Participante) => this.admiteaParticipante(unParticipante))
 
   def admiteaParticipante(participante: Participante):Boolean = requisitosParaParticipar.forall( condicion => condicion(participante))

@@ -34,7 +34,7 @@ case class Vikingo  (
   }
 
 
-  def esMejorQue(vikingo: Vikingo)(posta: Posta):Boolean = posta.resultadoParticipante(this) >= posta.resultadoParticipante(vikingo)
+
 
   def poseeUnItemDelTipo[T] (): Boolean = {
     if (this.item.isDefined) {
