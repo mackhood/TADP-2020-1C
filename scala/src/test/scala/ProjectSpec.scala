@@ -227,8 +227,8 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Un torneo" in {
     var hipo = new Vikingo(50, 200, 5, 70)
     var astrid = new Vikingo(_peso = 70,400, 10, 70)
-    val pesca = new Pesca()
-    pesca.agregarRequisitoPeso(55)
+    var pesca = new Pesca()
+    pesca = pesca.agregarRequisitoPeso(55)
     var elTorneo = new Torneo(Array(hipo, astrid), Array(pesca))
     elTorneo.resultadoTorneo shouldBe Array(astrid)
   }

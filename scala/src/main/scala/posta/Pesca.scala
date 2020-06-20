@@ -20,14 +20,13 @@ case class Pesca(var _requisitosParaParticipar : Array[(Participante) => Boolean
 
 
 
-  def agregarRequisitoPeso(valor: Int):Unit = {
+  def agregarRequisitoPeso(valor: Double):Pesca = {
 
     val requisito = (x: Participante) => x match {
-      case Jinete(dragon, vikingo) => ((dragon.peso * .2) - vikingo._peso) >= valor
-      case Vikingo(_peso, velocidad, barbarosidad, hambre, item) => (_peso *.5 + barbarosidad * 2) >= valor
+      case  jinete: Jinete => ((jinete.dragon.peso * .2) - jinete.vikingo._peso) >= valor
+      case vikingo: Vikingo => (vikingo._peso *.5 + vikingo.barbarosidad * 2) >= valor
     }
-    _requisitosParaParticipar :+ requisito
-
+    this.copy(_requisitosParaParticipar = Array(requisito))
   }
 
 

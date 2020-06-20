@@ -29,6 +29,7 @@ abstract class Posta ( var requisitosParaParticipar: Array[( Participante) => Bo
 
   def admiteaParticipante(participante: Participante):Boolean = requisitosParaParticipar.forall( condicion => condicion(participante))
 
+
   //def tieneHambre(vikingo: Vikingo): Boolean ={
    // nivelHambreFinalizarPosta(vikingo) >100
   //}
