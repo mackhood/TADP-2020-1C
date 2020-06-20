@@ -15,7 +15,7 @@ case class Pesca(var _requisitosParaParticipar : Array[(Participante) => Boolean
 
   def resultadoParticipante(participante: Participante):Double = participante match {
     case vikingo: Vikingo => vikingo._peso * 0.5 + vikingo.barbarosidad *2
-    case jinete: Jinete => jinete.dragon.peso * 0.2 - jinete.vikingo._peso
+    case jinete: Jinete => jinete.getPeso
   }
 
 

@@ -183,7 +183,33 @@ class ProjectSpec extends FreeSpec with Matchers {
     }
   }
 
+  "Postas" - {
+    "Solo vikingos" - {
+      "En pesca es mejor el competidor que más pescado logre cargar" - {
+        "A misma barbarosidad, el que mas pesa gana" -  {
+          var pesca = new Pesca()
+          var unVikingo = new Vikingo(50, 200, 5, 70)
+          var otroVikingo = new Vikingo(80, 200, 5, 70)
+          assert(otroVikingo.esMejorQue(unVikingo)(pesca))
+        }
+
+        "A mismo peso, el mas barbaro gana" -  {
+          var pesca = new Pesca()
+          var unVikingo = new Vikingo(50, 200, 5, 70)
+          var otroVikingo = new Vikingo(50, 200, 6, 70)
+          assert(otroVikingo.esMejorQue(unVikingo)(pesca))
+        }
+      }
+    }
+  }
+
   "Vikingo: Mejor resultado" - {
+    "Un vikingo sin dragones para ser jinete es el mejor resultado en una posta cualquiera" - {
+      var hipo = new Vikingo(50, 200, 5, 70)
+      var pesca = new Pesca()
+      hipo.mejorMontura(Array(), pesca).equals(hipo)
+    }
+
     "Un vikingo sin dragones para ser jinete es el mejor resultado en una posta cualquiera" - {
       var hipo = new Vikingo(50, 200, 5, 70)
       var pesca = new Pesca()

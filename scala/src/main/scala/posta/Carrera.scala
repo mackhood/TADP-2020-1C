@@ -8,7 +8,7 @@ case class Carrera() extends Posta  {
 
   def resultadoParticipante(participante: Participante):Double = participante match {
     case vikingo: Vikingo => vikingo.velocidad
-    case jinete: Jinete => jinete.dragon.getVelocidad - jinete.vikingo._peso
+    case jinete: Jinete => jinete.getVelocidad
   }
 
 

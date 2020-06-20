@@ -9,7 +9,8 @@ case class Jinete(
    var vikingo: Vikingo
  ) extends Participante(){
 
-
+ def getVelocidad = dragon.getVelocidad - vikingo._peso
+ def getPeso = dragon.peso * 0.2 - vikingo._peso
 
 
 }
