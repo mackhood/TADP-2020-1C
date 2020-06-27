@@ -1,3 +1,3 @@
 package items
 
-case class Arma ( var valor : Double) extends Item()
+case class Arma ( valor : Double) extends Item()

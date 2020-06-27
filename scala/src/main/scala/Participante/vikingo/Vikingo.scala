@@ -8,15 +8,16 @@ import items.Item
 import posta.Posta
 
 case class Vikingo  (
-                      var _peso: Int,
-                      var velocidad: Int,
-                      var barbarosidad: Double,
-                      var hambre: Int,
+
+                      peso: Int,
+                      velocidad: Int,
+                      barbarosidad: Double,
+                      hambre: Int,
                       item: Option[Item] = None
                   )extends Participante() {
 
   // CONSTRUCTOR
-  require(_peso > 0)
+  require(peso > 0)
   require(velocidad > 0)
   require(barbarosidad > 0)
   require(hambre >= 0)
@@ -30,29 +31,25 @@ case class Vikingo  (
   }
 
   def montar(unDragon: Dragon): Jinete ={
-    if (unDragon.puedeSerMontadoPor(this)) new Jinete(unDragon, this) else throw new NoPuedeSerMontadoException
+    if (unDragon.puedeSerMontadoPor(this)) Jinete(unDragon, this) else throw NoPuedeSerMontadoException()
   }
 
 
 
 
   def poseeUnItemDelTipo[T] (): Boolean = {
-    if (this.item.isDefined) {
-      this.item.get match {
-        case _: T => true
-        case _ => false
-      }
-    }else{
-      false
-    }
+    this.item.isInstanceOf[Some[T]]
   }
 
   def danio() : Double = barbarosidad + (if(this.item.isDefined) this.item.get.danio else 0)
 
   def mejorMontura(dragones : Array[Dragon], postaAParticipar : Posta) : Participante = {
     // Veo las combinaciones Jinete (las que se montan ok)
-    var jinetes : Array[Participante] = dragones.filter((dragon : Dragon) => dragon.puedeSerMontadoPor(this)).map((dragon : Dragon) => this.montar(dragon))
-    var participantesPosibles : Array[Participante] = jinetes.+:(this)
-    postaAParticipar.mejorResultado(participantesPosibles)
+    val jinetes : Array[Participante] = dragones.filter((dragon : Dragon) => dragon.puedeSerMontadoPor(this)).map((dragon : Dragon) => this.montar(dragon))
+    val participantesPosibles : Array[Participante] = jinetes.+:(this)
+    postaAParticipar.mejorResultado(participantesPosibles) match{
+      case Some(combinacion) => combinacion
+      case None => this
+    }
   }
 }
