@@ -4,26 +4,26 @@ import Participante.Participante
 import _root_.Participante.vikingo.Vikingo
 
 import scala.collection.mutable.ArrayBuffer
-abstract class Posta ( requisitosParaParticipar: Array[( Participante) => Boolean] = Array() ){
+
+abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] = Array()) {
   //def competir(): ArrayBuffer[Participante]
   //def filtrarParticipante(): ArrayBuffer[Participante]
   //def nivelHambreFinalizarPosta(vikingo: Vikingo): Int
 
-  def resultadoParticipante(participante: Participante):Double
+  def resultadoParticipante(participante: Participante): Double
 
-  // PASAR A OPTION
-  def mejorResultado(participantes : Array[Participante])  = { // Y si dos empatan? / y si ninguno gana? - se puede decidir que agarra el primero
+  def mejorResultado(participantes: Array[Participante]) = {
     Option(podioPosta(participantes).head)
   }
 
-  def podioPosta (participantes : Array[Participante]) : Array[Participante] =  admisionVariosParticipantesSegunRequisitos(participantes).sortBy((unParticipante : Participante) => -this.resultadoParticipante(unParticipante))
+  def podioPosta(participantes: Array[Participante]): Array[Participante] = admisionVariosParticipantesSegunRequisitos(participantes).sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
 
-  def admisionVariosParticipantesSegunRequisitos (participantes : Array[Participante]) : Array[Participante] = participantes.filter((unParticipante : Participante) => this.admiteaParticipante(unParticipante))
+  def admisionVariosParticipantesSegunRequisitos(participantes: Array[Participante]): Array[Participante] = participantes.filter((unParticipante: Participante) => this.admiteaParticipante(unParticipante))
 
-  def admiteaParticipante(participante: Participante):Boolean = requisitosParaParticipar.forall( condicion => condicion(participante))
+  def admiteaParticipante(participante: Participante): Boolean = requisitosParaParticipar.forall(condicion => condicion(participante))
 
 
   //def tieneHambre(vikingo: Vikingo): Boolean ={
-   // nivelHambreFinalizarPosta(vikingo) >100
+  // nivelHambreFinalizarPosta(vikingo) >100
   //}
 }

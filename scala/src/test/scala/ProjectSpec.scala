@@ -1,12 +1,11 @@
 import dragon.{Dragon, FuriaNocturna, Gronckle, NadderMortifero}
-import Participante.jinete.Jinete
 import org.scalatest.{FreeSpec, Matchers}
 import Participante.vikingo.Vikingo
-import Participante.Participante
-import exceptions.{NoPuedeSerMontadoException, PesoNoPuedeSerMayoraVelocidadBaseException}
+import exceptions.PesoNoPuedeSerMayoraVelocidadBaseException
 import items.SistemaDeVuelo
 import posta.{Carrera, Combate, Pesca}
 import torneo.Torneo
+
 class ProjectSpec extends FreeSpec with Matchers {
 
   "Este proyecto" - {
@@ -24,7 +23,9 @@ class ProjectSpec extends FreeSpec with Matchers {
         Vikingo(50, 200, 5, 70)
       }
       "si algun parametro es negativo, tira un error" in {
-        assertThrows[IllegalArgumentException]{Vikingo(-1, 200, 5, 70)}
+        assertThrows[IllegalArgumentException] {
+          Vikingo(-1, 200, 5, 70)
+        }
       }
     }
 
@@ -38,21 +39,21 @@ class ProjectSpec extends FreeSpec with Matchers {
 
       "si la suma del hambre anterior y el que aumenta da mayor que 100, vale 100" in {
         val hipo = Vikingo(50, 200, 5, 70)
-        val nuevoHipo :Vikingo = hipo.aumentarHambre(35)
+        val nuevoHipo: Vikingo = hipo.aumentarHambre(35)
         nuevoHipo.hambre shouldBe 100
       }
     }
-      "vikingo es mejor en postas que otro" in{
-        val hipo = Vikingo(50, 200, 5, 70)
-        val astrid = Vikingo(peso = 70,400, 10, 70)
-        val pesca = Pesca()
-        val carrera = Carrera()
-        val combate = Combate()
-        astrid.esMejorQue(hipo)(pesca) shouldBe true
-        astrid.esMejorQue(hipo)(carrera) shouldBe true
-        astrid.esMejorQue(hipo)(combate) shouldBe true
+    "vikingo es mejor en postas que otro" in {
+      val hipo = Vikingo(50, 200, 5, 70)
+      val astrid = Vikingo(peso = 70, 400, 10, 70)
+      val pesca = Pesca()
+      val carrera = Carrera()
+      val combate = Combate()
+      astrid.esMejorQue(hipo)(pesca) shouldBe true
+      astrid.esMejorQue(hipo)(carrera) shouldBe true
+      astrid.esMejorQue(hipo)(combate) shouldBe true
 
-      }
+    }
   }
 
   "Dragon" - {
@@ -61,17 +62,21 @@ class ProjectSpec extends FreeSpec with Matchers {
         new Dragon(15)
       }
       "si el peso es negativo o cero, tira un error" in {
-        assertThrows[IllegalArgumentException]{new Dragon(0)}
+        assertThrows[IllegalArgumentException] {
+          new Dragon(0)
+        }
       }
 
       "si el peso es mayor a su velocidad base, tira una excepcion" in {
-        assertThrows[PesoNoPuedeSerMayoraVelocidadBaseException]{new Dragon(61)}
+        assertThrows[PesoNoPuedeSerMayoraVelocidadBaseException] {
+          new Dragon(61)
+        }
       }
     }
 
     "Velocidad" - {
       "La velocidad es la diferencia entre el peso y la velocidad base" in {
-        new Dragon(150, 300 ).getVelocidad shouldBe 300 - 150
+        new Dragon(150, 300).getVelocidad shouldBe 300 - 150
       }
 
       "La velocidad base default es 60 km/h" in {
@@ -87,7 +92,7 @@ class ProjectSpec extends FreeSpec with Matchers {
       }
 
       "su daño es el especificado en la creacion" in {
-        FuriaNocturna(30, 60, 15 ).getDanio shouldBe 15
+        FuriaNocturna(30, 60, 15).getDanio shouldBe 15
       }
     }
 
@@ -124,23 +129,23 @@ class ProjectSpec extends FreeSpec with Matchers {
       "Un dragon NO puede llevar un vikingo que pesa mas del 20% de su peso" in {
         val hipo = Vikingo(50, 200, 5, 70)
         val unGronckle = Gronckle(249, 300)
-        assertThrows[exceptions.NoPuedeSerMontadoException]{
+        assertThrows[exceptions.NoPuedeSerMontadoException] {
           hipo.montar(unGronckle)
         }
       }
 
       "Chimuelo es un Furia nocturna que requiere que el vikingo tenga un sistema de vuelo como ítem" in {
-        val requisito = (dragon: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
-        val chimuelo = FuriaNocturna(255, 500, 15, Array(requisito) )
-        val hipo = Vikingo(50, 200, 5, 70,Some(SistemaDeVuelo()))
+        val requisito = (_: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
+        val chimuelo = FuriaNocturna(255, 500, 15, Array(requisito))
+        val hipo = Vikingo(50, 200, 5, 70, Some(SistemaDeVuelo()))
         hipo.montar(chimuelo)
       }
 
       "Chimuelo es un Furia nocturna que requiere que el vikingo tenga un sistema de vuelo como ítem (Si no lo tiene, falla) " in {
-        val requisito = (dragon: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
-        val chimuelo = FuriaNocturna(255, 500, 15, Array(requisito) )
+        val requisito = (_: Dragon, vikingo: Vikingo) => vikingo.poseeUnItemDelTipo[SistemaDeVuelo]()
+        val chimuelo = FuriaNocturna(255, 500, 15, Array(requisito))
         val hipo = Vikingo(50, 200, 5, 70)
-        assertThrows[exceptions.NoPuedeSerMontadoException]{
+        assertThrows[exceptions.NoPuedeSerMontadoException] {
           hipo.montar(chimuelo)
         }
       }
@@ -178,13 +183,13 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Postas" - {
     "Solo vikingos" - {
       "En pesca es mejor el competidor que más pescado logre cargar" - {
-        "A misma barbarosidad, el que mas pesa gana" in  {
+        "A misma barbarosidad, el que mas pesa gana" in {
           val unVikingo = Vikingo(50, 200, 5, 70)
           val otroVikingo = Vikingo(80, 200, 5, 70)
           assert(otroVikingo.esMejorQue(unVikingo)(Pesca()))
         }
 
-        "A mismo peso, el mas barbaro gana" in  {
+        "A mismo peso, el mas barbaro gana" in {
           val unVikingo = Vikingo(50, 200, 5, 70)
           val otroVikingo = Vikingo(50, 200, 6, 70)
           assert(otroVikingo.esMejorQue(unVikingo)(Pesca()))
@@ -215,14 +220,14 @@ class ProjectSpec extends FreeSpec with Matchers {
 
   "Un torneo" in {
     val hipo = Vikingo(50, 200, 5, 70)
-    val astrid = Vikingo(peso = 70,400, 10, 70)
+    val astrid = Vikingo(peso = 70, 400, 10, 70)
     Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(55)))
       .resultadoTorneo shouldBe Array(astrid)
   }
 
   "Un torneo que nadie gana (porque no pasan los requisitos)" in {
     val hipo = Vikingo(50, 200, 5, 70)
-    val astrid = Vikingo(peso = 70,400, 10, 70)
+    val astrid = Vikingo(peso = 70, 400, 10, 70)
     Torneo(Array(hipo, astrid), Array(Pesca(Array {
       case participante: Vikingo => participante.peso > 150000
       case _ => false
