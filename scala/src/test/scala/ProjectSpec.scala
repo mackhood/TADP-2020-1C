@@ -1,7 +1,7 @@
 import dragon.{Dragon, FuriaNocturna, Gronckle, NadderMortifero}
 import org.scalatest.{FreeSpec, Matchers}
 import Participante.vikingo.Vikingo
-import exceptions.PesoNoPuedeSerMayoraVelocidadBaseException
+import exceptions.{NingunParticipanteEsAdmitidoEnEstaPostaException, PesoNoPuedeSerMayoraVelocidadBaseException}
 import items.SistemaDeVuelo
 import posta.{Carrera, Combate, Pesca}
 import torneo.Torneo
@@ -228,11 +228,13 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Un torneo que nadie gana (porque no pasan los requisitos)" in {
     val hipo = Vikingo(50, 200, 5, 70)
     val astrid = Vikingo(peso = 70, 400, 10, 70)
-    Torneo(Array(hipo, astrid), Array(Pesca(Array {
-      case participante: Vikingo => participante.peso > 150000
-      case _ => false
-    })))
-      .resultadoTorneo shouldBe Array()
+    assertThrows[NingunParticipanteEsAdmitidoEnEstaPostaException] {
+      Torneo(Array(hipo, astrid), Array(Pesca(Array {
+        case participante: Vikingo => participante.peso > 150000
+        case _ => false
+      })))
+        .resultadoTorneo
+    }
   }
 
 }

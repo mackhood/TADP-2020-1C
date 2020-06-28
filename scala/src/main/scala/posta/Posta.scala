@@ -2,6 +2,7 @@ package posta
 
 import Participante.Participante
 import _root_.Participante.vikingo.Vikingo
+import exceptions.NingunParticipanteEsAdmitidoEnEstaPostaException
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -12,11 +13,17 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
 
   def resultadoParticipante(participante: Participante): Double
 
-  def mejorResultado(participantes: Array[Participante]) = {
-    Option(podioPosta(participantes).head)
+  def mejorResultado(participantes: Array[Participante]) = Option(podioPosta(participantes).head)
+
+  def podioPosta(participantes: Array[Participante]): Array[Participante] = {
+    val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
+    if(participantesAdmitidos.length == 0){
+      throw NingunParticipanteEsAdmitidoEnEstaPostaException(this.nombre);
+    }
+    participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
   }
 
-  def podioPosta(participantes: Array[Participante]): Array[Participante] = admisionVariosParticipantesSegunRequisitos(participantes).sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
+  def nombre = this.getClass.getSimpleName
 
   def admisionVariosParticipantesSegunRequisitos(participantes: Array[Participante]): Array[Participante] = participantes.filter((unParticipante: Participante) => this.admiteaParticipante(unParticipante))
 
