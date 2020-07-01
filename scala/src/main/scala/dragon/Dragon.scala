@@ -1,6 +1,8 @@
 package dragon
 
 import Participante.vikingo.Vikingo
+import Participante.Participante
+import _root_.Participante.jinete.Jinete
 import exceptions.PesoNoPuedeSerMayoraVelocidadBaseException
 
 class Dragon(
@@ -21,4 +23,13 @@ class Dragon(
   def getDanio = danio
 
   def puedeSerMontadoPor(unVikingo: Vikingo): Boolean = requisitosParaSerMontado.forall(condicion => condicion(this, unVikingo)) && unVikingo.peso <= peso * .2
+
+  def estaDisponible(listaParticipantes :Array[Participante]):Boolean = {
+    val dragones: Array[Dragon] = Array()
+    listaParticipantes.foreach( participante => participante match {
+      case jinete: Jinete => dragones.+:(jinete.dragon)
+    }
+    )
+    dragones.contains(this)
+  }
 }

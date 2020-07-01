@@ -29,17 +29,22 @@ case class Torneo(
 //  }
 
 
-//  def prepararParticipantes(participantes: Array[Participante],dragonesDisponibles: Array[Dragon],posta: Posta):Array[Participante] ={
-//    var participantesGenerados:  Array[Participante] = Array()
-//    var listaDragonesAuxiliares: ArrayBuffer[Dragon] = dragonesDisponibles.clone()
-//
-//    val participante2 = Vikingo(50, 200, 5, 70)
-//
-////    participantes.foreach { participante =>
-////       val variable = participante.match {
-////         //
-////       }
-////    }
+ def prepararParticipantes(participantes: Array[Participante],dragonesDisponibles: Array[Dragon],posta: Posta):Array[Participante] ={
+    val participantesGenerados:  Array[Participante] = Array()
+    val listaDragonesAuxiliares: Array[Dragon] = dragonesDisponibles.clone()
+
+    val participante2 = Vikingo(50, 200, 5, 70)
+
+    participantes.foreach { x =>
+      x match {
+        case a: Vikingo => participantesGenerados.+:(a.mejorMontura(listaDragonesAuxiliares,posta))
+        case _ => println("Caso todavia no contemplado")
+      }
+
+      listaDragonesAuxiliares.filterNot(dragon_ => dragon_.estaDisponible(participantesGenerados))
+    }
+   participantesGenerados
+    }
 
 
 
