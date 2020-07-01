@@ -16,17 +16,17 @@ case class Torneo(
                    dragonesDisponibles: Array[Dragon] = Array()
                  ) {
 
-//  def resultadoTorneo: Array[Participante] = {postas.foldLeft(participantes)
-//    ((participantesRestantes: Array[Participante], unaPosta: Posta) => {
-//    if(participantesRestantes.length <= 1) {
-//      // TODO: Se ejecutan postas sin participantes
-//      participantesRestantes
-//    }else{
-//      unaPosta.podioPosta(participantesRestantes)
-//    }
-//
-//  })
-//  }
+  def resultadoTorneo: Array[Participante] = {postas.foldLeft(participantes)
+    ((participantesRestantes: Array[Participante], unaPosta: Posta) => {
+    if(participantesRestantes.length <= 1) {
+      // TODO: Se ejecutan postas sin participantes
+      participantesRestantes
+    }else{
+      unaPosta.podioPosta(prepararParticipantes(participantesRestantes))
+    }
+
+  })
+  }
 
 
  def prepararParticipantes(participantes: Array[Participante],dragonesDisponibles: Array[Dragon],posta: Posta):Array[Participante] ={

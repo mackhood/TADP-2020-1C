@@ -1,7 +1,7 @@
 package dragon
 
-import Participante.vikingo.Vikingo
-import Participante.Participante
+import _root_.Participante.vikingo.Vikingo
+import _root_.Participante.Participante
 import _root_.Participante.jinete.Jinete
 import exceptions.PesoNoPuedeSerMayoraVelocidadBaseException
 
