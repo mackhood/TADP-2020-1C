@@ -29,5 +29,7 @@ case class Pesca(_requisitosParaParticipar: Array[(Participante) => Boolean] = A
     this.copy(_requisitosParaParticipar = Array(requisito))
   }
 
+  def aumentoDeNivelDeHambre() = 5
+
 
 }

@@ -23,5 +23,7 @@ case class Combate() extends Posta {
     case jinete: Jinete => jinete.dragon.danio + jinete.vikingo.danio()
   }
 
+  def aumentoDeNivelDeHambre() = 10
+
 
 }
