@@ -26,8 +26,9 @@ class Dragon(
 
   def estaDisponible(listaParticipantes :Array[Participante]):Boolean = {
     val dragones: Array[Dragon] = Array()
-    !listaParticipantes.exists { participante => participante match {
-      case jinete: Jinete => jinete.dragon.equals(this) }
+    !listaParticipantes.exists {
+      case jinete: Jinete => jinete.dragon == this
+      case _ => false
     }
 
   }

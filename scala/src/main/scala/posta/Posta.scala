@@ -31,6 +31,14 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
   }
 
   def afectarNivelDeHambre(participantes: Array[Participante]): Array[Participante] = {
+    participantes.map { unParticipante =>
+      unParticipante.aumentarHambre(this.aumentoDeNivelDeHambre())
+    }
+  }
+
+
+
+  def afectarNivelDeHambre(participantes: Array[Participante]): Array[Participante] = {
     participantes.map((unParticipante: Participante) => {
       unParticipante match {
         case Jinete(dragon, vikingo) => Jinete(dragon, vikingo.aumentarHambre(5))

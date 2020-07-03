@@ -24,7 +24,7 @@ case class Vikingo(
   require(hambre <= 100)
 
   //METHODS
-  def aumentarHambre(porcentaje: Int): Vikingo = {
+  override def aumentarHambre(porcentaje: Int): Vikingo = {
     var nuevoHambre = hambre
     if (hambre + porcentaje < 100) nuevoHambre = (hambre + porcentaje) else nuevoHambre = 100
     this.copy(hambre = nuevoHambre)
