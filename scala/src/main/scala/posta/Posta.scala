@@ -15,11 +15,7 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
   def resultadoParticipante(participante: Participante): Double
 
   def mejorResultado(participantes: Array[Participante]):Option[Participante] = {
-    mejorPosibilidad(participantes) match{
-      case Array() => None
-      case _ =>Option(mejorPosibilidad(participantes).head)
-
-  }
+    mejorPosibilidad(participantes).headOption
   }
 
   def mejorPosibilidad(participantes: Array[Participante]):Array[Participante] = {

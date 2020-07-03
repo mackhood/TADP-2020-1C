@@ -26,10 +26,9 @@ class Dragon(
 
   def estaDisponible(listaParticipantes :Array[Participante]):Boolean = {
     val dragones: Array[Dragon] = Array()
-    listaParticipantes.foreach( participante => participante match {
-      case jinete: Jinete => dragones.+:(jinete.dragon)
+    !listaParticipantes.exists { participante => participante match {
+      case jinete: Jinete => jinete.dragon.equals(this) }
     }
-    )
-    dragones.contains(this)
+
   }
 }
