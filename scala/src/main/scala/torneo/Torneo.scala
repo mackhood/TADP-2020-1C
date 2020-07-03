@@ -11,18 +11,16 @@ case class Torneo(
                    regla: Regla = new Estandar()
                  ) {
 
-  def resultadoTorneo: Participante = {
+  def resultadoTorneo: Array[Participante] = {
     val resultado = postas.foldLeft(participantes)((participantesRestantes: Array[Participante], unaPosta: Posta) => {
 
       if (participantesRestantes.length == 1) {
-        // TODO: Se ejecutan postas sin participantes
         participantesRestantes
       } else {
-
         regla.postPosta(unaPosta.podioPosta(regla.previoPosta(participantesRestantes, regla.filtrarDragones(dragonesDisponibles), unaPosta)))
       }
     })
-    resultado.head
+    resultado
   }
 
 }

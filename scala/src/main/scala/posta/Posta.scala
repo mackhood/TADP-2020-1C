@@ -23,11 +23,7 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
 
   def mejorPosibilidad(participantes: Array[Participante]):Array[Participante] = {
     val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
-    if(participantesAdmitidos.length  <= 1 ){
-      participantesAdmitidos
-    }else{
-      participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
-    }
+    participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
   }
 
 

@@ -221,7 +221,7 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Un torneo" in {
     val hipo = Vikingo(50, 200, 5, 70)
     val astrid = Vikingo(peso = 70, 400, 10, 70)
-    val torneo = Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(55)))
+    val torneo = Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(50)))
     torneo.resultadoTorneo shouldBe Array(astrid)
   }
 
