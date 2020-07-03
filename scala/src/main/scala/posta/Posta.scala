@@ -11,11 +11,12 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
   //def competir(): ArrayBuffer[Participante]
   //def filtrarParticipante(): ArrayBuffer[Participante]
   //def nivelHambreFinalizarPosta(vikingo: Vikingo): Int
-  def aumentoDeNivelDeHambre() : Int
+  def aumentoDeNivelDeHambre(): Int
+
   def resultadoParticipante(participante: Participante): Double
 
 
-  def mejorPosibilidad(participantes: Array[Participante]):Option[Participante] = {
+  def mejorPosibilidad(participantes: Array[Participante]): Option[Participante] = {
     val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
     participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante)).headOption
   }
@@ -23,17 +24,17 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
 
   def podioPosta(participantes: Array[Participante]): Array[Participante] = {
     val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
-    if(participantesAdmitidos.length == 0 ){
+    if (participantesAdmitidos.isEmpty) {
       throw NingunParticipanteEsAdmitidoEnEstaPostaException(this.nombre);
     }
     this.afectarNivelDeHambre(participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante)))
   }
 
   def afectarNivelDeHambre(participantes: Array[Participante]): Array[Participante] = {
-    participantes.map((unParticipante : Participante) => {
+    participantes.map((unParticipante: Participante) => {
       unParticipante match {
         case Jinete(dragon, vikingo) => Jinete(dragon, vikingo.aumentarHambre(5))
-        case a: Vikingo=> a.aumentarHambre(this.aumentoDeNivelDeHambre())
+        case vikingo: Vikingo => vikingo.aumentarHambre(this.aumentoDeNivelDeHambre())
       }
     })
   }
