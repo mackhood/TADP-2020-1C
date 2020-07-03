@@ -13,11 +13,27 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
 
   def resultadoParticipante(participante: Participante): Double
 
-  def mejorResultado(participantes: Array[Participante]) = Option(podioPosta(participantes).head)
+  def mejorResultado(participantes: Array[Participante]):Option[Participante] = {
+    mejorPosibilidad(participantes) match{
+      case Array() => None
+      case _ =>Option(mejorPosibilidad(participantes).head)
+
+  }
+  }
+
+  def mejorPosibilidad(participantes: Array[Participante]):Array[Participante] = {
+    val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
+    if(participantesAdmitidos.length  <= 1 ){
+      participantesAdmitidos
+    }else{
+      participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
+    }
+  }
+
 
   def podioPosta(participantes: Array[Participante]): Array[Participante] = {
     val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
-    if(participantesAdmitidos.length == 0){
+    if(participantesAdmitidos.length == 0 ){
       throw NingunParticipanteEsAdmitidoEnEstaPostaException(this.nombre);
     }
     participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))

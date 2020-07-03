@@ -16,24 +16,22 @@ case class Torneo(
                    dragonesDisponibles: Array[Dragon] = Array()
                  ) {
 
-  def resultadoTorneo: Array[Participante] = {postas.foldLeft(participantes)
-    ((participantesRestantes: Array[Participante], unaPosta: Posta) => {
-    if(participantesRestantes.length <= 1) {
-      // TODO: Se ejecutan postas sin participantes
-      participantesRestantes
-    }else{
-      unaPosta.podioPosta(prepararParticipantes(participantesRestantes))
-    }
-
-  })
+  def resultadoTorneo: Array[Participante] = {postas.foldLeft(participantes)((participantesRestantes: Array[Participante], unaPosta: Posta) => {
+      if (participantesRestantes.length == 1) {
+        // TODO: Se ejecutan postas sin participantes
+        participantesRestantes
+      } else {
+        unaPosta.podioPosta(prepararParticipantes(participantesRestantes, dragonesDisponibles, unaPosta))
+      }
+    })
   }
 
 
- def prepararParticipantes(participantes: Array[Participante],dragonesDisponibles: Array[Dragon],posta: Posta):Array[Participante] ={
-    val participantesGenerados:  Array[Participante] = Array()
-    val listaDragonesAuxiliares: Array[Dragon] = dragonesDisponibles.clone()
 
-    val participante2 = Vikingo(50, 200, 5, 70)
+
+ def prepararParticipantes(participantes: Array[Participante],dragonesDisponibles: Array[Dragon],posta: Posta):Array[Participante] ={
+    var participantesGenerados:  Array[Participante] = Array()
+    var listaDragonesAuxiliares: Array[Dragon] = dragonesDisponibles.clone()
 
     participantes.foreach { x =>
       x match {
@@ -41,7 +39,7 @@ case class Torneo(
         case _ => println("Caso todavia no contemplado")
       }
 
-      listaDragonesAuxiliares.filterNot(dragon_ => dragon_.estaDisponible(participantesGenerados))
+      //listaDragonesAuxiliares.filterNot(dragon_ => dragon_.estaDisponible(participantesGenerados))
     }
    participantesGenerados
     }

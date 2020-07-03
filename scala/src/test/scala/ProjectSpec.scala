@@ -218,23 +218,23 @@ class ProjectSpec extends FreeSpec with Matchers {
     }
   }
 
-//  "Un torneo" in {
-//    val hipo = Vikingo(50, 200, 5, 70)
-//    val astrid = Vikingo(peso = 70, 400, 10, 70)
-//    Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(55)))
-//      .resultadoTorneo shouldBe Array(astrid)
-//  }
-//
-//  "Un torneo que nadie gana (porque no pasan los requisitos)" in {
-//    val hipo = Vikingo(50, 200, 5, 70)
-//    val astrid = Vikingo(peso = 70, 400, 10, 70)
-//    assertThrows[NingunParticipanteEsAdmitidoEnEstaPostaException] {
-//      Torneo(Array(hipo, astrid), Array(Pesca(Array {
-//        case participante: Vikingo => participante.peso > 150000
-//        case _ => false
-//      })))
-//        .resultadoTorneo
-//    }
-//  }
+  "Un torneo" in {
+    val hipo = Vikingo(50, 200, 5, 70)
+    val astrid = Vikingo(peso = 70, 400, 10, 70)
+    val torneo = Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(55)))
+    torneo.resultadoTorneo shouldBe Array(astrid)
+  }
+
+  "Un torneo que nadie gana (porque no pasan los requisitos)" in {
+    val hipo = Vikingo(50, 200, 5, 70)
+    val astrid = Vikingo(peso = 70, 400, 10, 70)
+    assertThrows[NingunParticipanteEsAdmitidoEnEstaPostaException] {
+      Torneo(Array(hipo, astrid), Array(Pesca(Array {
+        case participante: Vikingo => participante.peso > 150000
+        case _ => false
+      })))
+        .resultadoTorneo
+    }
+  }
 
 }
