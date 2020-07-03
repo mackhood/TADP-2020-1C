@@ -14,13 +14,10 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
   def aumentoDeNivelDeHambre() : Int
   def resultadoParticipante(participante: Participante): Double
 
-  def mejorResultado(participantes: Array[Participante]):Option[Participante] = {
-    mejorPosibilidad(participantes).headOption
-  }
 
-  def mejorPosibilidad(participantes: Array[Participante]):Array[Participante] = {
+  def mejorPosibilidad(participantes: Array[Participante]):Option[Participante] = {
     val participantesAdmitidos = admisionVariosParticipantesSegunRequisitos(participantes)
-    participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante))
+    participantesAdmitidos.sortBy((unParticipante: Participante) => -this.resultadoParticipante(unParticipante)).headOption
   }
 
 

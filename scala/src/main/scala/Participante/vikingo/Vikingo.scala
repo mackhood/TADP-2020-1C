@@ -45,7 +45,7 @@ case class Vikingo(
   def mejorMontura(dragones: Array[Dragon], postaAParticipar: Posta): Participante = {
     val jinetes: Array[Participante] = dragones.filter(_.puedeSerMontadoPor(this)).map(this.montar)
     val participantesPosibles: Array[Participante] = jinetes.+:(this)
-    postaAParticipar.mejorResultado(participantesPosibles) match {
+    postaAParticipar.mejorPosibilidad(participantesPosibles) match {
       case Some(combinacion) => combinacion
       case None => this
     }
