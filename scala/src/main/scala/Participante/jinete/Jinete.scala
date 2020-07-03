@@ -7,7 +7,7 @@ import dragon.Dragon
 case class Jinete(
                    dragon: Dragon,
                    vikingo: Vikingo
-                 ) extends Participante() {
+                 ) extends Participante {
 
   def getVelocidad = dragon.getVelocidad - vikingo.peso
 

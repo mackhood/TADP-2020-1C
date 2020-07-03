@@ -14,7 +14,7 @@ case class Vikingo(
                     barbarosidad: Double,
                     hambre: Int,
                     item: Option[Item] = None
-                  ) extends Participante() {
+                  ) extends Participante {
 
   // CONSTRUCTOR
   require(peso > 0)
@@ -36,13 +36,14 @@ case class Vikingo(
 
 
   def poseeUnItemDelTipo[T](): Boolean = {
-    this.item.isInstanceOf[Some[T]]
+
+    this.item.exists(_.isInstanceOf[T])
   }
 
   def danio(): Double = barbarosidad + (if (this.item.isDefined) this.item.get.danio else 0)
 
   def mejorMontura(dragones: Array[Dragon], postaAParticipar: Posta): Participante = {
-    val jinetes: Array[Participante] = dragones.filter((dragon: Dragon) => dragon.puedeSerMontadoPor(this)).map((dragon: Dragon) => this.montar(dragon))
+    val jinetes: Array[Participante] = dragones.filter(_.puedeSerMontadoPor(this)).map(this.montar)
     val participantesPosibles: Array[Participante] = jinetes.+:(this)
     postaAParticipar.mejorResultado(participantesPosibles) match {
       case Some(combinacion) => combinacion
