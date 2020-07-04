@@ -7,8 +7,8 @@ import dragon.Dragon
 import exceptions.EstoNoEsUnequipoException
 import posta.Posta
 
-class PorEquipo extends Estandar {
-
+class PorEquipo (var equiposParticipantes : Array[Equipo]) extends Estandar {
+/*
 
   override def previoPosta(participantes: Array[Participante], dragones: Array[Dragon], posta: Posta): Array[Participante] = {
 
@@ -19,7 +19,15 @@ class PorEquipo extends Estandar {
     super.previoPosta(participantesGenerados, dragones, posta)
   }
 
-  override def postPosta(participantes: Array[Participante]): Array[Participante] = super.postPosta(participantes)
+  override def postPosta(participantes: Array[Participante]): Array[Participante] = {
+    val intermedio = super.postPosta(participantes)
+    intermedio.map( (unEquipo : Equipo) => {
+      new Equipo(
+        unEquipo.participantes.filter(participantes.contains(_))
+      )
+    })
+    equiposParticipantes =
+  }
 
-
+*/
 }

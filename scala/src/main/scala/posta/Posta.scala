@@ -27,7 +27,7 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
     if (participantesAdmitidos.isEmpty) {
       throw NingunParticipanteEsAdmitidoEnEstaPostaException(this.nombre);
     }
-    this.afectarNivelDeHambre(participantesAdmitidos.sortBy((unParticipante: Participante) => this.resultadoParticipante(unParticipante))(Ordering[Double].reverse))
+    participantesAdmitidos.sortBy((unParticipante: Participante) => this.resultadoParticipante(unParticipante))(Ordering[Double].reverse)
   }
 
   def afectarNivelDeHambre(participantes: Array[Participante]): Array[Participante] = {

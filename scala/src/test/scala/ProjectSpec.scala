@@ -198,7 +198,7 @@ class ProjectSpec extends FreeSpec with Matchers {
         "El primero es primero y el segundo, segundo" in {
           val unVikingo = Vikingo(50, 200, 5, 70)
           val otroVikingo = Vikingo(50, 200, 6, 70)
-          Pesca().podioPosta(Array(unVikingo, otroVikingo)).head shouldBe otroVikingo.copy(hambre = 75)
+          Pesca().podioPosta(Array(unVikingo, otroVikingo)).head shouldBe otroVikingo
         }
       }
     }
@@ -221,7 +221,7 @@ class ProjectSpec extends FreeSpec with Matchers {
   "Un torneo" in {
     val hipo = Vikingo(50, 200, 5, 70)
     val astrid = Vikingo(peso = 70, 400, 10, 70)
-    val torneo = Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(50)))
+    val torneo = new Torneo(Array(hipo, astrid), Array(Pesca().agregarRequisitoPeso(50)))
     torneo.resultadoTorneo shouldBe Array(astrid.copy(hambre = 75))
   }
 
@@ -229,7 +229,7 @@ class ProjectSpec extends FreeSpec with Matchers {
     val hipo = Vikingo(50, 200, 5, 70)
     val astrid = Vikingo(peso = 70, 400, 10, 70)
     assertThrows[NingunParticipanteEsAdmitidoEnEstaPostaException] {
-      Torneo(Array(hipo, astrid), Array(Pesca(Array {
+      new Torneo(Array(hipo, astrid), Array(Pesca(Array {
         case participante: Vikingo => participante.peso > 150000
         case _ => false
       })))
