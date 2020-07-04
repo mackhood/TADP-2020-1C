@@ -12,11 +12,10 @@ class PorEquipo extends Estandar {
 
   override def previoPosta(participantes: Array[Participante], dragones: Array[Dragon], posta: Posta): Array[Participante] = {
 
-    var participantesGenerados: Array[Participante] = participantes.map((equipo: Participante)=> equipo match {
-
+    var participantesGenerados: Array[Participante] = participantes.flatMap((equipo: Participante) => equipo match {
       case equipo: Equipo => equipo.participantes
       case _ => throw new EstoNoEsUnequipoException()
-    }).flatten.toArray
+    }).toArray
     super.previoPosta(participantesGenerados, dragones, posta)
   }
 

@@ -13,7 +13,7 @@ case class Jinete(
 
   def getPeso = dragon.peso * 0.2 - vikingo.peso
 
-  override def aumentarHambre(porcentaje: Int) = {
-    copy(dragon, vikingo.aumentarHambre(5))
+  override def aumentarHambre(porcentaje: Int):Jinete = {
+    this.copy(dragon, vikingo.aumentarHambre(5))
   }
 }
