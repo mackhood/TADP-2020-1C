@@ -9,6 +9,7 @@ import posta.Posta
 import scala.collection.mutable.ArrayBuffer
 
 class Estandar() extends Regla {
+  // REFACTOR CON FOLD
   override def previoPosta(participantes: Array[Participante], dragones: Array[Dragon],posta: Posta): Array[Participante] = {
       var participantesGenerados:  ArrayBuffer[Participante] = ArrayBuffer()
       var listaDragonesAuxiliares: ArrayBuffer[Dragon] = collection.mutable.ArrayBuffer(dragones: _*)
@@ -17,10 +18,10 @@ class Estandar() extends Regla {
       participantes.foreach { x =>
         x match {
           case a: Vikingo => participantesGenerados.append(a.mejorMontura(listaDragonesAuxiliares.toArray,posta))
-          case _ => println("Caso todavia no contemplado")
+          case _ => _
         }
 
-        listaDragonesAuxiliares.filterNot(dragon_ => dragon_.estaDisponible(participantesGenerados.toArray))
+        listaDragonesAuxiliares = listaDragonesAuxiliares.filterNot(dragon_ => dragon_.estaDisponible(participantesGenerados.toArray))
       }
       participantesGenerados.toArray;
     }

@@ -23,7 +23,7 @@ case class TorneoPorEquipos(var equiposParticipantes: Array[Participante], _post
 
     equiposParticipantes.map((unEquipo: Participante) => {
       unEquipo match {
-        case a: Equipo => new Equipo(a.participantes.filter(resultadoPosta.contains(_)))
+        case a: Equipo => a.copy(a.participantes.filter(resultadoPosta.contains(_)))
       }
     })
   }

@@ -27,6 +27,7 @@ abstract class Posta(requisitosParaParticipar: Array[(Participante) => Boolean] 
     if (participantesAdmitidos.isEmpty) {
       throw NingunParticipanteEsAdmitidoEnEstaPostaException(this.nombre);
     }
+//    implicit val saraza : Ordering[Double]= ???
     participantesAdmitidos.sortBy((unParticipante: Participante) => this.resultadoParticipante(unParticipante))(Ordering[Double].reverse)
   }
 

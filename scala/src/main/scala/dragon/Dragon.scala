@@ -25,11 +25,9 @@ class Dragon(
   def puedeSerMontadoPor(unVikingo: Vikingo): Boolean = requisitosParaSerMontado.forall(condicion => condicion(this, unVikingo)) && unVikingo.peso <= peso * .2
 
   def estaDisponible(listaParticipantes :Array[Participante]):Boolean = {
-    val dragones: Array[Dragon] = Array()
     !listaParticipantes.exists {
       case jinete: Jinete => jinete.dragon == this
       case _ => false
     }
-
   }
 }
